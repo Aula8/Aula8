@@ -1,0 +1,75 @@
+{
+  "name": "Aula8",
+  "description": "El Aula Virtual de la UNEG",
+  "keywords": [
+    "express",
+    "mongoose",
+    "mongodb",
+    "passport",
+    "Aula8"
+  ],
+  "version": "4.0.0",
+  "private": false,
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.x"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon server.js",
+    "debug": "./node_modules/.bin/nodemon --debug server.js",
+    "test": "./node_modules/.bin/babel-tape-runner test/filldb.js",
+    "filldb": "node filldb.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.1",
+    "co": "~4.6.0",
+    "coffee-script": "^1.10.0",
+    "compression": "~1.6.2",
+    "connect": "^3.4.1",
+    "connect-flash": "~0.1.1",
+    "connect-mongo": "~1.2.0",
+    "cookie-parser": "~1.4.0",
+    "cookie-session": "~1.2.0",
+    "cors": "2.7.1",
+    "cross-env": "~1.0.7",
+    "csurf": "~1.9.0",
+    "dotenv": "~2.0.0",
+    "express": "~4.13.3",
+    "express-session": "~1.13.0",
+    "express.io": "^1.1.13",
+    "forever": "~0.15.1",
+    "jade": "~1.11.0",
+    "jwt-simple": "^0.5.0",
+    "method-override": "~2.3.5",
+    "moment": "^2.13.0",
+    "mongoose": "~4.4.15",
+    "morgan": "~1.7.0",
+    "multer": "~1.1.0",
+    "notifier": "~0.1.7",
+    "only": "0.0.2",
+    "passport": "~0.3.2",
+    "passport-facebook": "~2.1.0",
+    "passport-github": "~1.1.0",
+    "passport-google-oauth": "~1.0.0",
+    "passport-linkedin": "~1.0.0",
+    "passport-local": "~1.0.0",
+    "passport-twitter": "~1.0.3",
+    "socket.io": "^1.4.6",
+    "view-helpers": "~0.1.5",
+    "winston": "~2.2.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "~6.0.4",
+    "babel-preset-stage-0": "~6.5.0",
+    "babel-tape-runner": "~2.0.1",
+    "eslint": "~2.11.0",
+    "nodemon": "1.9.2",
+    "supertest": "*",
+    "tape": "~4.5.1"
+  }
+}
