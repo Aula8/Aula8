@@ -14,6 +14,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.View.OnClickListener;
 
+import static android.R.drawable.ic_btn_speak_now;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +38,7 @@ public class Paint extends Fragment implements OnClickListener{
     private OnFragmentInteractionListener mListener;
 
     private DrawingView drawView;
-    private ImageButton currPaint, drawBtn, eraseBtn, newBtn, lineBtn;
+    private ImageButton currPaint, drawBtn, eraseBtn, newBtn, lineBtn, voiceBtn;
     private float smallBrush, mediumBrush, largeBrush;
 
     public Paint() {
@@ -99,6 +101,8 @@ public class Paint extends Fragment implements OnClickListener{
         eraseBtn.setOnClickListener(this);
         newBtn = (ImageButton)getView().findViewById(R.id.new_btn);
         newBtn.setOnClickListener(this);
+        voiceBtn = (ImageButton)getView().findViewById(R.id.voice_btn);
+        voiceBtn.setOnClickListener(this);
         lineBtn = (ImageButton)getView().findViewById(R.id.line_btn);
         lineBtn.setOnClickListener(this);
     }
@@ -150,7 +154,7 @@ public class Paint extends Fragment implements OnClickListener{
         drawView.setErase(false);
         drawView.setBrushSize(drawView.getLastBrushSize());
         if(view!=currPaint){
-           //Actualiza el  color
+            //Actualiza el  color
             ImageButton imgView = (ImageButton)view;
             String color = view.getTag().toString();
             drawView.setColor(color);
@@ -256,6 +260,7 @@ public class Paint extends Fragment implements OnClickListener{
             newDialog.setPositiveButton("Si", new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
                     drawView.startNew();
+                    Servidor.enviarEvento("borrar todo");
                     dialog.dismiss();
                 }
             });
@@ -271,6 +276,19 @@ public class Paint extends Fragment implements OnClickListener{
             drawView.setBrushSize(smallBrush);
             drawView.setErase(false);
 
+        }
+        else if(view.getId() == R.id.voice_btn)
+        {
+            if(AudioStream.isRecording())
+            {
+                AudioStream.stopRecording();
+                voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_online));
+            }
+            else
+            {
+                AudioStream.startRecording();
+                voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_busy));
+            }
         }
 
     }

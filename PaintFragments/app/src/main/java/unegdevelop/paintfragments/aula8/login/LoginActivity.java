@@ -1,5 +1,7 @@
 package unegdevelop.paintfragments.aula8.login;
 
+import unegdevelop.paintfragments.Utils;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -28,15 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.github.kevinsawicki.http.HttpRequest;
+
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -296,80 +295,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         private final String mEmail;
         private final String mPassword;
-        private final  Context mContext;
+        private final Context mContext;
+        public String message;
+        public HashMap<String, String> hasObj = new HashMap<String, String>();
+        public JSONObject jsonObj;
 
-        UserLoginTask(String email, String password, Context context) {
+        UserLoginTask(String email, String password, Context contex) {
             mEmail = email;
             mPassword = password;
-            mContext = context;
-        }
-
-        public String  performPostCall(String requestURL,
-                                       HashMap<String, String> postDataParams) {
-
-            URL url;
-            String response = "";
-            try {
-                url = new URL(requestURL);
-                Toast.makeText(mContext, "success : " + url, Toast.LENGTH_SHORT).show();
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(15000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(getPostDataString(postDataParams));
-
-                writer.flush();
-                writer.close();
-                os.close();
-                int responseCode=conn.getResponseCode();
-                Toast.makeText(mContext, "success : " + responseCode, Toast.LENGTH_SHORT).show();
-
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    String line;
-                    BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    while ((line=br.readLine()) != null) {
-                        response+=line;
-                    }
-                }
-                else {
-                    response="";
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return response;
-        }
-
-        private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
-            StringBuilder result = new StringBuilder();
-            boolean first = true;
-            for(Map.Entry<String, String> entry : params.entrySet()){
-                if (first)
-                    first = false;
-                else
-                    result.append("&");
-
-                result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-                result.append("=");
-                result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-            }
-
-            return result.toString();
+            mContext = contex;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            boolean status = false;
+
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -377,8 +318,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 return false;
             }
 
+            try {
 
-            boolean status = true;
+                hasObj.put("username", mEmail);
+                hasObj.put("hashed_password", mPassword);
+
+                jsonObj = Utils.requestPost("http://192.168.1.2:3000/auth/login", hasObj);
+
+                if(!jsonObj.has("error")){
+                    String username = (String) jsonObj.get("username");
+                    status = true;
+                }else {
+                    status = false;
+                    message = (String) jsonObj.get("message");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
 
             return status;
         }
@@ -391,9 +348,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             if (success) {
                 //finish();
                 Intent myIntent = new Intent(mContext, MainActivityLobby.class);
+                Bundle b = new Bundle();
+                b.putString("json", jsonObj.toString());
+                myIntent.putExtras(b);
                 startActivity(myIntent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError((String) message);
                 mPasswordView.requestFocus();
             }
         }

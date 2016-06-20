@@ -45,6 +45,13 @@
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/erase"
                 android:src="@drawable/eraser" />
+
+            <ImageButton
+                android:id="@+id/voice_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="Voice"
+                android:src="@android:drawable/presence_audio_online" />
         </LinearLayout>
 
 

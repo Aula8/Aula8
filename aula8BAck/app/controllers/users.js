@@ -63,7 +63,7 @@ exports.login = function (req, res) {
   console.log("login", req.body);
   User.findOne({username: req.body.username.toLowerCase()}, function(err, user) {
     if(err)
-      res.send({error: true, message: "Error: "+err})
+      res.send({error: true, message: "Error: "})
     else if (!user)
       res.send({error: true, message: "Usuario no encontrado"})
     else if (user){
@@ -72,8 +72,12 @@ exports.login = function (req, res) {
       else {
         return res
             .status(200)
-            .send({status: service.createToken(user)});
+            .send(user);
       }
     }
   });
 };
+
+exports.subject = function(req, res){
+  console.log(req.body);
+}

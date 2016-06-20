@@ -1,12 +1,18 @@
 package unegdevelop.paintfragments.aula8.lobby;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -17,10 +23,12 @@ public class Fragmento extends Fragment {
     private RecyclerView.LayoutManager lmanager;
     private RecyclerView.Adapter adaptador;
     ArrayList<Sala> datos;
+    private JSONObject jsonObj;
 
     public Fragmento() {
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,6 +37,14 @@ public class Fragmento extends Fragment {
 
         reciclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         reciclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
+
+        try {
+            String strtext = getArguments().getString("json");
+            jsonObj = new JSONObject(strtext);
+            System.out.println(strtext);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         datos = new ArrayList<Sala>(); //creo una lista de objetos de tipo sala para adaptarla al fragmento
 

@@ -40,7 +40,8 @@ module.exports = function (app, passport) {
   app.post('/create/subjectuser', subjectusers.create);
   app.post('/auth/login', users.login);
   app.get('/private', auth.ensureAuthenticated);
-  app.get('/users/:username', auth.ensureAuthenticated, users.findUser);
+  //app.get('/users/subject', users.subject);
+  app.get('/users/:username', users.findUser);
 
   console.log('Express app started on port ' + port);
 
@@ -71,11 +72,8 @@ module.exports = function (app, passport) {
 
     socket.on('send_audio', function(data)
     {
-        console.log("recibiendo Audio..");
-        socket.broadcast.to(socket.room).emit('get_audio', 
-        {
-            audio:data.audio
-        })
+        client.broadcast.emit('get_audio', data);
+        console.log('recibiendo audio');
     });
 
     socket.on('nuevo mensaje', function (data) {
@@ -126,6 +124,18 @@ module.exports = function (app, passport) {
         nombre_Usuario: socket.username,
         img_Codificada: data
       });
+    });
+
+    socket.on("pintar", function(data)
+    {
+        client.broadcast.emit("pintar",data);
+        console.log(data);
+    });
+
+    socket.on("borrar todo", function()
+    {
+        client.broadcast.emit("borrar todo");
+        console.log("Borrar todo");
     });
 
 

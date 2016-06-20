@@ -6,6 +6,8 @@ var service = require('./services');
 const mongoose = require('mongoose');
 const { wrap: async } = require('co');
 const Section = mongoose.model('Section');
+const User = mongoose.model('User');
+const Subject = mongoose.model('Subject');
 /*
 	Find Section
 */
@@ -48,29 +50,34 @@ exports.findSectionByProfessor = function (req, res) {
 	Insert section in the db
 */
 exports.create = async(function* (req, res){
-	var professor1 = User.findOne({ username: req.params.professor }); //buscas el profesor
-	var subject = Subject.findOne({ name: req.params.subject }); //buscas la materia
-	const Section= new Section({
-		number: req.params.number,
-		subject: subject.id,
-		professor: professor1.id,
-		registered: req.params.registered,
-	});
-	Section.save(function(err, section){
-		if(!err){
-			console.log("Section created");
-			return res.send({ status: 'OK', section:section});
-		}else{
-			console.log(err);
-			if(err.name == 'ValidationError'){
-					res.statusCode=400;
-					res.send({error:'ValidationError'});
+	console.log("professor ", req.body.professor);
+	User.findOne({username: req.body.professor}, function(err, user){
+		Subject.findOne({ name: req.body.subject }, function(err, subject){
+
+			const section = new Section({
+				number: req.params.number,
+				subject: subject.id,
+				professor: user.id,
+				registered: req.params.registered,
+			});
+			section.save(function(err, section){
+				if(!err){
+					console.log("Section created");
+					res.send({ status: 'OK', section:section});
 				}else{
-				res.statusCode=500;
-				res.send({error: 'Server error'});
+					console.log(err);
+					if(err.name == 'ValidationError'){
+							res.statusCode=400;
+							res.send({error:'ValidationError'});
+						}else{
+						res.statusCode=500;
+						res.send({error: 'Server error'});
+						}
+						console.log('Internal error(%d): %s',res.statusCode,err.message);
 				}
-				console.log('Internal error(%d): %s',res.statusCode,err.message);
-		}
-	})
+			});
+
+		});
+	});	
 });
 //Created by: Ricardo Vasquez 26073680
