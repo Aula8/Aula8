@@ -16,7 +16,7 @@ const Session = mongoose.model('Session');
 const SubjectUser = mongoose.model('SubjectUser');
 const Question = mongoose.model('Question');
 
-/*
+
 // Crear Usuarios..
 test('Create - User', t => {
 	request(app)
@@ -54,6 +54,8 @@ test('Create - Subjects', t => {
 });
 
 
+
+/*
 // Crear Secciones..
 var professor1 = User.findOne({ username: 'profe' }); //buscas el profesor
 var subject = Subject.findOne({ name: 'Matemáticas 1' }); //buscas la materia
@@ -69,6 +71,10 @@ test('Create - Sections', t => {
 });*/
 
 
+
+
+
+/*
 // Unir Estudiantes a una sección de una materia..
 test('Create - SubjectUser', t => {
 	request(app)
@@ -79,3 +85,4 @@ test('Create - SubjectUser', t => {
 	.expect(200)
 	.end(t.end());
 });
+*/
