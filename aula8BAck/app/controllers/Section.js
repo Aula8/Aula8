@@ -53,7 +53,7 @@ exports.create = async(function* (req, res){
 	console.log("professor ", req.body.professor);
 	User.findOne({username: req.body.professor}, function(err, user){
 		Subject.findOne({ name: req.body.subject }, function(err, subject){
-
+			console.log(req.body.subject, subject);
 			const section = new Section({
 				number: req.params.number,
 				subject: subject.id,
