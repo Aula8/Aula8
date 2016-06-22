@@ -8,6 +8,10 @@ var service = require('./services');
 const mongoose = require('mongoose');
 const { wrap: async } = require('co');
 const User = mongoose.model('User');
+const Subject = mongoose.model('Subject');
+const SubjectUser = mongoose.model('SubjectUser');
+const Section = mongoose.model('Section');
+const asyncc = require('async');
 
 
 /**
@@ -59,8 +63,17 @@ exports.findUser = function (req, res) {
 };
 
 
-exports.login = function (req, res) {
-  console.log("login", req.body);
+var filterValuePart = function(arr, part) {
+    return arr.filter(function(obj) {
+        return Object.keys(obj)
+                     .some(function(k) { 
+                               return obj[k].indexOf(part) !== -1; 
+                           });
+    });
+};
+
+
+exports.login = async(function* (req, res) {
   User.findOne({username: req.body.username.toLowerCase()}, function(err, user) {
     if(err)
       res.send({error: true, message: "Error: "})
@@ -70,14 +83,57 @@ exports.login = function (req, res) {
       if (user.hashed_password != req.body.hashed_password)
         res.send({error: true, message: "Contraseña incorrecta"})
       else {
-        return res
-            .status(200)
-            .send(user);
+        var student = [];
+        var subjectaux = [];
+        var subjects = [];
+        var sections = [];
+        var professors = [];
+
+        asyncc.parallel({
+            subjectUser : function (cb){ SubjectUser.find({user: user.id}).exec(cb); },
+            subject : function (cb){ Subject.find({}).exec(cb); },
+            section : function (cb){ Section.find({}).exec(cb); },
+            professor : function (cb){ User.find({}).exec(cb); },
+        }, function(err, result){
+
+            for(var i=0; i < result.subjectUser.length; i++){
+              sections.push( result.section.filter( function(sect){
+                return String(sect.subject) === String(result.subjectUser[i].subject);
+              }));
+              subjects.push( result.subject.filter(function(sub){
+                return String(sub._id) === String(result.subjectUser[i].subject)
+              }));
+            }
+            subjects = [].concat.apply([], subjects)
+
+            for(var i=0 ; i<sections.length; i++){
+                professors.push( result.professor.filter(function(prof){
+                    return String(prof._id) === String(result.section[i].professor);
+                }));
+            }
+            professors = [].concat.apply([], professors)
+            console.log(professors);
+            return res
+                  .status(200)
+                  .send({user:user, subject:subjects, professor:professors});
+        });
+
       }
     }
   });
-};
+});
 
-exports.subject = function(req, res){
+exports.Subjects = function(req, res){
   console.log(req.body);
+  User.findOne({username: req.body.username.toLowerCase()}, function(err, user) {
+    if(err)
+      res.send({error: true, message: "Error: "})
+    else if (!user)
+      res.send({error: true, message: "Usuario no encontrado"})
+    else if (user){
+      SubjectUser.findOne({user: user.id}, function(err, subjectUser){
+          console.log("[Subject] --> ", subjectUser);
+      });
+    }
+  });
 }

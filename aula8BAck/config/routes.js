@@ -39,6 +39,7 @@ module.exports = function (app, passport) {
   app.post('/create/subject', subjects.create);
   app.post('/create/subjectuser', subjectusers.create);
   app.post('/auth/login', users.login);
+  app.post('/users/subjects', users.Subjects);
   app.get('/private', auth.ensureAuthenticated);
   //app.get('/users/subject', users.subject);
   app.get('/users/:username', users.findUser);
@@ -72,7 +73,7 @@ module.exports = function (app, passport) {
 
     socket.on('send_audio', function(data)
     {
-        client.broadcast.emit('get_audio', data);
+        socket.broadcast.emit('get_audio', data);
         console.log('recibiendo audio');
     });
 
@@ -128,13 +129,13 @@ module.exports = function (app, passport) {
 
     socket.on("pintar", function(data)
     {
-        client.broadcast.emit("pintar",data);
+        socket.broadcast.emit("pintar",data);
         console.log(data);
     });
 
     socket.on("borrar todo", function()
     {
-        client.broadcast.emit("borrar todo");
+        socket.broadcast.emit("borrar todo");
         console.log("Borrar todo");
     });
 

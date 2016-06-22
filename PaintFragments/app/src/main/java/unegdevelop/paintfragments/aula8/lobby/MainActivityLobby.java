@@ -12,12 +12,14 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import unegdevelop.paintfragments.R;
+import unegdevelop.paintfragments.Utils;
 
 public class MainActivityLobby extends AppCompatActivity {
     private Button bAsignar;
     private Bundle b;
-    public JSONObject jsonObj;
 
     protected void onCreate(Bundle savedInstanceState) {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //orientacion de la pantalla bloqueada solo horizontal
@@ -26,11 +28,7 @@ public class MainActivityLobby extends AppCompatActivity {
         bAsignar = (Button)findViewById(R.id.bAsignar);
 
         b = getIntent().getExtras();
-        try {
-            jsonObj = new JSONObject(b.getString("json"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         bAsignar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){ //Asignacion del fragment mediante codigo a la layout principal

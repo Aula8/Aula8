@@ -15,6 +15,12 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Servidor.start();
+        try {
+            AudioStream.startReceiver();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
 
        /* FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

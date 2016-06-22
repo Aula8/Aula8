@@ -323,10 +323,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 hasObj.put("username", mEmail);
                 hasObj.put("hashed_password", mPassword);
 
-                jsonObj = Utils.requestPost("http://192.168.1.2:3000/auth/login", hasObj);
+                jsonObj = Utils.requestServer("http://192.168.1.3:3000/auth/login", hasObj);
 
                 if(!jsonObj.has("error")){
-                    String username = (String) jsonObj.get("username");
                     status = true;
                 }else {
                     status = false;

@@ -42,7 +42,7 @@ var subjectusers = [
 	{user: "wuilkysb", subject: "Tecnicas de Programación 2", number: "1"},
 ]
 
-
+/*
 test('Create - Estudents', t => {
 	for (var i =0; i < students.length; i++){
 		request(app)
@@ -71,7 +71,7 @@ test('Create - Professors', t => {
 		.expect(200)
 		.end(t.end());
 	}
-});
+});*/
 
 /*
 //Crear materias
@@ -107,7 +107,7 @@ test('Create - Sections', t => {
 
 
 
-/*
+
 //---> Descomenta luego de haber corrido todo lo anterior (comentas todo lo anterior)
 test('Create - SubjectUser', t => {
 	for (var i =0; i < subjectusers.length; i++){	
@@ -120,4 +120,3 @@ test('Create - SubjectUser', t => {
 		.end(t.end());
 	}	
 });
-*/

@@ -23,7 +23,10 @@ public class Fragmento extends Fragment {
     private RecyclerView.LayoutManager lmanager;
     private RecyclerView.Adapter adaptador;
     ArrayList<Sala> datos;
-    private JSONObject jsonObj;
+    public JSONObject jsonObj;
+    public JSONObject jsonObjUser;
+    public JSONObject jsonObjSubjects;
+    public JSONObject jsonObjSubjectsProfessors;
 
     public Fragmento() {
     }
@@ -39,9 +42,12 @@ public class Fragmento extends Fragment {
         reciclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
 
         try {
-            String strtext = getArguments().getString("json");
-            jsonObj = new JSONObject(strtext);
-            System.out.println(strtext);
+            jsonObj = new JSONObject(getArguments().getString("json"));
+            jsonObjUser = jsonObj.getJSONObject("user");
+            jsonObjSubjects = jsonObj.getJSONObject("subject");
+            jsonObjSubjectsProfessors = jsonObj.getJSONObject("professor");
+            long x = jsonObj.getLong("subject");
+            System.out.println(x);
         } catch (JSONException e) {
             e.printStackTrace();
         }

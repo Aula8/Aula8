@@ -44,7 +44,7 @@ public class Servidor
 
     final static int ESPERA_ENTRE_CONEXIONES = 1000;
     final static int INTENTOS_CONEXION = 20;
-    final static String PUERTO = "1234";
+    final static String PUERTO = "3000";
 
     static public String URL;
     static Socket socket;
@@ -86,15 +86,15 @@ public class Servidor
         opts.forceNew = true;
         opts.reconnection = true;
 
-        for (int i=0;i<=INTENTOS_CONEXION ; i++)
+        /*for (int i=0;i<=INTENTOS_CONEXION ; i++)
         {
 
             if(i>10)
                 numero = "1"+i;
             else
-                numero = "10"+i;
+                numero = "10"+i;*/
 
-            prueba = "http://192.168.1."+numero+":"+PUERTO;
+            prueba = "http://192.168.1.3"+":"+PUERTO;
 
             try
             {
@@ -105,7 +105,6 @@ public class Servidor
                 if(socket.connected())
                 {
                     URL = prueba;
-                    break;
                 }
             }
             catch (URISyntaxException e)
@@ -113,7 +112,7 @@ public class Servidor
 
             }
 
-        }
+        /*}*/
     }
 
 

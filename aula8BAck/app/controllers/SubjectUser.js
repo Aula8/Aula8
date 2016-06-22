@@ -55,8 +55,9 @@ exports.create = async(function* (req, res){
 		Subject.findOne({ name: req.body.subject }, function(err, subject){
 			Section.findOne({ subject: subject.id, number: req.body.number }, function(err, section){
 				const subjectUser= new SubjectUser({
-					user: student.id,
+					section: req.body.number,
 					subject: subject.id,
+					user: student.id,
 				});
 				subjectUser.save(function(err, subjectuser){
 					if(!err){
