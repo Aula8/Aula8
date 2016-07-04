@@ -32,9 +32,15 @@ var subjects = [
 	{namee: "Ingeniería del Software 1", description: "Descripcion para Software", level: "5",},
 ]
 
+var sessions = [
+	{theme: "Introduccion a la POO", subject: "Tecnicas de Programación 2", status: "inactive",},
+	{theme: "Herencias", subject: "Tecnicas de Programación 2", status: "active",},
+	{theme: "DFD", subject: "Ingeniería del Software 1", status: "inactive",},
+]
+
 var sections = [
-	{number: "1", subject: "Ingeniería del Software 1", professor: "jrondon", registered: "35"},
-	{number: "1", subject: "Tecnicas de Programación 2", professor: "jbello", registered: "35"},
+	{number: 2, subject: "Ingeniería del Software 1", professor: "jrondon", registered: "35"},
+	{number: 3, subject: "Tecnicas de Programación 2", professor: "jbello", registered: "35"},
 ]
 
 var subjectusers = [
@@ -106,7 +112,22 @@ test('Create - Sections', t => {
 */
 
 
+//---> Descomenta luego de haber corrido todo lo anterior (comentas todo lo anterior)
+test('Create - Sessions', t => {
+	for (var i =0; i < sessions.length; i++){	
+		request(app)
+		.post('/create/session')
+		.field('theme', sessions[i].theme) 				//el username del estudiante
+		.field('subject', sessions[i].subject)		//el nombre de la sección
+		.field('status', sessions[i].status)
+		.expect(200)
+		.end(t.end());
+	}	
+});
 
+
+
+/*
 
 //---> Descomenta luego de haber corrido todo lo anterior (comentas todo lo anterior)
 test('Create - SubjectUser', t => {
@@ -120,3 +141,4 @@ test('Create - SubjectUser', t => {
 		.end(t.end());
 	}	
 });
+*/

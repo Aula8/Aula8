@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
 import android.util.Base64;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.github.kevinsawicki.http.HttpRequest;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +32,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.socket.client.IO;
 import io.socket.client.Manager;
@@ -47,11 +53,57 @@ public class Servidor
     final static String PUERTO = "3000";
 
     static public String URL;
-    static Socket socket;
+    static public Socket socket;
+
+
+    public static JSONObject jsonObj;
+    public static JSONObject jsonObjUser;
+    public static JSONArray jsonObjSubjects;
+    public static JSONArray jsonObjSessions;
+    public static JSONArray jsonObjSections;
+    public static JSONArray jsonObjSubjectsProfessors;
+
+
+    private Servidor(){}
 
     public static String getURLServidor()
     {
         return URL;
+    }
+
+    public static JSONObject requestServerPost(String url, HashMap<String, String>... params) throws JSONException {
+        JSONObject jsonObj;
+        HttpRequest request = HttpRequest.post(URL + url);
+
+        if(params.length > 0)
+            for (Map.Entry<String, String> param : params[0].entrySet()) {
+                request.part((String) param.getKey(), (String) param.getValue());
+            }
+
+        String body = request.body().toString();
+        jsonObj = new JSONObject(body);
+        return  jsonObj;
+    }
+
+    public static void setDataUser(JSONObject json){
+        try {
+            jsonObj = json;
+            jsonObjUser = json.getJSONObject("user");
+            jsonObjSubjects = json.getJSONArray("subject");
+            jsonObjSections = json.getJSONArray("section");
+            jsonObjSubjectsProfessors = json.getJSONArray("professor");
+            jsonObjSessions = json.getJSONArray("session");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void  setDataSessionSubject(String j) throws JSONException {
+        jsonObjSessions = new JSONObject(j).getJSONArray("session");
+    }
+
+    public static JSONObject getDatUser(){
+        return jsonObj;
     }
 
 
@@ -80,23 +132,23 @@ public class Servidor
 
     public static void start()
     {
-        String numero = "100";
+        /*String numero = "100";
         String prueba = "http://192.168.1."+numero+":1234";
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
-        opts.reconnection = true;
+        opts.reconnection = true;*/
+        String prueba;
 
-        /*for (int i=0;i<=INTENTOS_CONEXION ; i++)
-        {
+        //for (int i = 0; i <= INTENTOS_CONEXION; i++) {
+                URL = "http://192.168.1.2:" + PUERTO + "/";
+        try {
+            socket = IO.socket(URL);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        socket.connect();
 
-            if(i>10)
-                numero = "1"+i;
-            else
-                numero = "10"+i;*/
-
-            prueba = "http://192.168.1.3"+":"+PUERTO;
-
-            try
+            /*try
             {
                 socket = IO.socket(prueba, opts);
                 socket.connect();
@@ -106,13 +158,7 @@ public class Servidor
                 {
                     URL = prueba;
                 }
-            }
-            catch (URISyntaxException e)
-            {
-
-            }
-
-        /*}*/
+            }*/
     }
 
 
@@ -148,8 +194,5 @@ public class Servidor
 
         }
     }
-
-
-
 
 }

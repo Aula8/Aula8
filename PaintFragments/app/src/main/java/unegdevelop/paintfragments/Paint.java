@@ -166,7 +166,7 @@ public class Paint extends Fragment implements OnClickListener{
 
     @Override
     public void onClick(View view){
-//respond to clicks
+    //respond to clicks
 
         if(view.getId()==R.id.draw_btn){
             //draw button clicked

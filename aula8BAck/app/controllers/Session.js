@@ -6,6 +6,7 @@ var service = require('./services');
 const mongoose = require('mongoose');
 const { wrap: async } = require('co');
 const Session = mongoose.model('Session');
+const Subject = mongoose.model('Subject');
 
 /*
 	Find Session
@@ -25,16 +26,15 @@ exports.findSessionByID = function (req, res) {
 	});	
 };
 
-exports.findSessionByTheme = function (req, res) {
-	Session.findOne({theme: req.params.theme}, function(err, Session){
-		if(!theme)
+exports.findSessionByTheme = async(function* (req, res) {
+	Session.findOne({theme: req.params.theme}, function(err, session){
+		if(!session)
 		{
 			res.statusCode = 404;
 			return res.send({error: 'Not found'});
 		}
-		if(!err){
-			return res.send({status: 'OK ', theme:theme,
-				create_at:create_at, Session:_id});
+		if(session){
+			return res.send({session: session});
 		}else
 		{
 			res.statusCode = 500
@@ -42,7 +42,30 @@ exports.findSessionByTheme = function (req, res) {
 			return res.send({error: 'Server error'});
 		}
 	});	
+});
+
+exports.findSessionBySubject = function (req, res) {
+	console.log(req.body.subject, req.params.subject);
+	Subject.findOne({name: req.params.subject}, function(error, subject){
+		return res.send({session: subject});
+		Session.findOne({subject: subject.id}, function(err, session){
+			if(!session)
+			{
+				res.statusCode = 404;
+				return res.send({error: 'Not found'});
+			}
+			if(session){
+				return res.send({session: session});
+			}else
+			{
+				res.statusCode = 500
+				console.log('Internal error(%d): %s',res.statusCode,err.message);
+				return res.send({error: 'Server error'});
+			}
+		});	
+	});
 };
+
 exports.findSessionByDate = function (req, res) {
 	Session.findOne({create_at: req.params.create_at}, function(err, Session){
 		if(!create_at)

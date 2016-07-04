@@ -11,6 +11,7 @@ const User = mongoose.model('User');
 const Subject = mongoose.model('Subject');
 const SubjectUser = mongoose.model('SubjectUser');
 const Section = mongoose.model('Section');
+const Session = mongoose.model('Session');
 const asyncc = require('async');
 
 
@@ -87,6 +88,7 @@ exports.login = async(function* (req, res) {
         var subjectaux = [];
         var subjects = [];
         var sections = [];
+        var sessions = [];
         var professors = [];
 
         asyncc.parallel({
@@ -94,6 +96,7 @@ exports.login = async(function* (req, res) {
             subject : function (cb){ Subject.find({}).exec(cb); },
             section : function (cb){ Section.find({}).exec(cb); },
             professor : function (cb){ User.find({}).exec(cb); },
+            session : function (cb){ Session.find({}).exec(cb); },
         }, function(err, result){
 
             for(var i=0; i < result.subjectUser.length; i++){
@@ -106,16 +109,25 @@ exports.login = async(function* (req, res) {
             }
             subjects = [].concat.apply([], subjects)
 
+            for(var i=0 ; i<subjects.length; i++){
+                sessions.push( result.session.filter(function(sess){
+                    return String(sess.subject) === String(result.subject[i]._id);
+                }));
+            }
+            sessions = [].concat.apply([], sessions)
+
+            sections = [].concat.apply([], sections)
             for(var i=0 ; i<sections.length; i++){
                 professors.push( result.professor.filter(function(prof){
                     return String(prof._id) === String(result.section[i].professor);
                 }));
             }
             professors = [].concat.apply([], professors)
-            console.log(professors);
+
+
             return res
                   .status(200)
-                  .send({user:user, subject:subjects, professor:professors});
+                  .send({user:user, subject:subjects, professor:professors, section:sections, session:sessions, token: service.createToken(user)});
         });
 
       }

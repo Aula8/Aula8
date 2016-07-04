@@ -15,6 +15,11 @@ const subjectusers = require('../app/controllers/SubjectUser');
 const question = require('../app/controllers/Question');
 const auth = require('./middlewares/authorization');
 const port = process.env.PORT || 3000;
+
+const mongoose = require('mongoose');
+const Session = mongoose.model('Session');
+const Subject = mongoose.model('Subject');
+
 var numUsuarios = 0;
 var ROOMS = {};
 var CLIENTS = {};
@@ -40,9 +45,12 @@ module.exports = function (app, passport) {
   app.post('/create/subjectuser', subjectusers.create);
   app.post('/auth/login', users.login);
   app.post('/users/subjects', users.Subjects);
+  
+  app.post('/', function(req, res){ res.send({success: "Ok"})});
   app.get('/private', auth.ensureAuthenticated);
   //app.get('/users/subject', users.subject);
-  app.get('/users/:username', users.findUser);
+  app.get('/users/:username', users.findUser)
+  app.post('/sessions/:subject', sessions.findSessionBySubject);
 
   console.log('Express app started on port ' + port);
 
@@ -151,6 +159,27 @@ module.exports = function (app, passport) {
           numUsuarios: numUsuarios
         });
       }
+    });
+
+    socket.on('getSessions', function (data) {
+          Subject.findOne({name: data}, function(error, subject){
+              Session.findOne({subject: subject.id}, function(err, session){
+                  if(!session)
+                  {
+                    res.statusCode = 404;
+                    socket.emit("setSessions", {error: 'Not found'});
+                  }
+                  if(session){
+                    console.log("Session Enviada");
+                    socket.emit("setSessions", {session: session});
+                  }else
+                  {
+                    res.statusCode = 500
+                    console.log('Internal error(%d): %s',res.statusCode,err.message);
+                    socket.emit("setSessions", {error: 'Server error'});
+                  }
+              }); 
+          });
     });
 
   });

@@ -25,11 +25,14 @@ public class MainActivityLobby extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //orientacion de la pantalla bloqueada solo horizontal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
-        bAsignar = (Button)findViewById(R.id.bAsignar);
+        //bAsignar = (Button)findViewById(R.id.bAsignar);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Fragmento fragment = new Fragmento();
+        transaction.add(R.id.layout_principal, fragment).commit();
 
-        b = getIntent().getExtras();
 
-        bAsignar.setOnClickListener(new View.OnClickListener() {
+        /*bAsignar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){ //Asignacion del fragment mediante codigo a la layout principal
                 FragmentManager fragmentManager = getFragmentManager();
@@ -38,7 +41,7 @@ public class MainActivityLobby extends AppCompatActivity {
                 fragment.setArguments(b);
                 transaction.add(R.id.layout_principal, fragment).commit();
             }
-        });
+        });*/
 
     }
 }

@@ -90,20 +90,5 @@ public class Utils
         }
     }
 
-    public static JSONObject requestServer(String url, HashMap<String, String> params) throws JSONException {
-        JSONObject jsonObj;
-        HttpRequest request;
-
-        request = HttpRequest.post(url);
-
-        for (Map.Entry<String, String> param : params.entrySet()) {
-            request.part((String) param.getKey(), (String) param.getValue());
-        }
-
-        String body = request.body();
-        jsonObj = new JSONObject(body);
-        return  jsonObj;
-    }
-
 
 }

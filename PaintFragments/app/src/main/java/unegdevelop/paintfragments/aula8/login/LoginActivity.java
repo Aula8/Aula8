@@ -1,5 +1,6 @@
 package unegdevelop.paintfragments.aula8.login;
 
+import unegdevelop.paintfragments.Servidor;
 import unegdevelop.paintfragments.Utils;
 
 import android.animation.Animator;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -84,7 +86,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_login);
+        Servidor.start();
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -323,7 +327,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 hasObj.put("username", mEmail);
                 hasObj.put("hashed_password", mPassword);
 
-                jsonObj = Utils.requestServer("http://192.168.1.3:3000/auth/login", hasObj);
+                jsonObj = Servidor.requestServerPost("auth/login", hasObj);
 
                 if(!jsonObj.has("error")){
                     status = true;
@@ -347,9 +351,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             if (success) {
                 //finish();
                 Intent myIntent = new Intent(mContext, MainActivityLobby.class);
-                Bundle b = new Bundle();
-                b.putString("json", jsonObj.toString());
-                myIntent.putExtras(b);
+                //Servidor.setRequestHeaders(jsonObj.get("token").toString());
+                Servidor.setDataUser(jsonObj);
                 startActivity(myIntent);
             } else {
                 mPasswordView.setError((String) message);
