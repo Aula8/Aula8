@@ -115,14 +115,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mSocket.connect();
-    }
-
-    public Socket mSocket;
-    {
-        try {
-            mSocket = IO.socket("http://192.168.1.2:3000");
-        } catch (URISyntaxException e) {}
     }
 
     private void populateAutoComplete() {
@@ -183,7 +175,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //mSocket.emit("credentials", obj);
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password, this.getApplicationContext());
             mAuthTask.execute((Void) null);

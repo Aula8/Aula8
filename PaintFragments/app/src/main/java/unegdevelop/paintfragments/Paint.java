@@ -1,6 +1,10 @@
 package unegdevelop.paintfragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,13 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.View.OnClickListener;
-
-import static android.R.drawable.ic_btn_speak_now;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 
 /**
@@ -38,9 +40,10 @@ public class Paint extends Fragment implements OnClickListener{
     private OnFragmentInteractionListener mListener;
 
     private DrawingView drawView;
-    private ImageButton currPaint, drawBtn, eraseBtn, newBtn, lineBtn, voiceBtn;
-    private float smallBrush, mediumBrush, largeBrush;
-
+    private ImageButton  drawBtn, eraseBtn, newBtn, lineBtn, colores, voiceBtn;;
+    private float TamañoPincel;
+    private SeekBar BarraPincel;
+    private TextView TextoTamañoPincel;
     public Paint() {
         // requiere constructor vacio
     }
@@ -88,23 +91,56 @@ public class Paint extends Fragment implements OnClickListener{
 
         super.onViewCreated(view, savedInstanceState);
         drawView = (DrawingView)getView().findViewById(R.id.drawing);
-        LinearLayout paintLayout = (LinearLayout)getView().findViewById(R.id.paint_colors);
-        currPaint = (ImageButton)paintLayout.getChildAt(0);
-        currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
-        smallBrush = getResources().getInteger(R.integer.small_size);
-        mediumBrush = getResources().getInteger(R.integer.medium_size);
-        largeBrush = getResources().getInteger(R.integer.large_size);
+
+        TextoTamañoPincel = (TextView)getView().findViewById(R.id.TamañoPincel);
+
+        TamañoPincel = 25;
+        TextoTamañoPincel.setText(TamañoPincel+" px");
+
+        BarraPincel = (SeekBar)getView().findViewById(R.id.BarraPincel);
+        BarraPincel.setMax(50);
+        BarraPincel.setProgress((int)TamañoPincel);
+
+        BarraPincel.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                // TODO Auto-generated method stub
+
+                TamañoPincel=progress;
+                TextoTamañoPincel.setText(TamañoPincel+" px");
+                drawView.setBrushSize(TamañoPincel);
+                drawView.setLastBrushSize(TamañoPincel);
+            }
+        });
+
+        colores = (ImageButton)getView().findViewById(R.id.colores);
+        colores.setOnClickListener(this);
         drawBtn = (ImageButton)getView().findViewById(R.id.draw_btn);
         drawBtn.setOnClickListener(this);
-        drawView.setBrushSize(mediumBrush);
+        drawView.setBrushSize(20);
         eraseBtn = (ImageButton)getView().findViewById(R.id.erase_btn);
         eraseBtn.setOnClickListener(this);
         newBtn = (ImageButton)getView().findViewById(R.id.new_btn);
         newBtn.setOnClickListener(this);
-        voiceBtn = (ImageButton)getView().findViewById(R.id.voice_btn);
-        voiceBtn.setOnClickListener(this);
         lineBtn = (ImageButton)getView().findViewById(R.id.line_btn);
         lineBtn.setOnClickListener(this);
+
+        voiceBtn = (ImageButton)getView().findViewById(R.id.voice_btn);
+        voiceBtn.setOnClickListener(this);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -148,108 +184,38 @@ public class Paint extends Fragment implements OnClickListener{
         void onFragmentInteraction(Uri uri);
     }
 
-    public void paintClicked(View view){
+    public void paintClicked(String color){
         //seleccionar el color
+
 
         drawView.setErase(false);
         drawView.setBrushSize(drawView.getLastBrushSize());
-        if(view!=currPaint){
-            //Actualiza el  color
-            ImageButton imgView = (ImageButton)view;
-            String color = view.getTag().toString();
-            drawView.setColor(color);
-            imgView.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
-            currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint));
-            currPaint=(ImageButton)view;
-        }
+
+        //Actualiza el  color
+        drawView.setColor(color);
+        Drawable PD = BarraPincel.getProgressDrawable();
+        PD.setColorFilter(Color.parseColor(color),android.graphics.PorterDuff.Mode.MULTIPLY);
+        BarraPincel.setProgressDrawable(PD);
+
+
     }
 
     @Override
     public void onClick(View view){
-    //respond to clicks
+//respond to clicks
 
         if(view.getId()==R.id.draw_btn){
             //draw button clicked
-            final Dialog brushDialog = new Dialog(getActivity());
-            brushDialog.setTitle("Tamaño del Pincel:");
-            brushDialog.setContentView(R.layout.brush_chooser);
-            //Boton pequeño
-            ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
-            smallBtn.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(smallBrush);
-                    drawView.setLastBrushSize(smallBrush);
-                    drawView.setErase(false);
-                    drawView.setBrush("point");
-                    brushDialog.dismiss();
-                }
-            });
 
-            //Boton mediano
-            ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
-            mediumBtn.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(mediumBrush);
-                    drawView.setLastBrushSize(mediumBrush);
-                    drawView.setErase(false);
-                    drawView.setBrush("point");
-                    brushDialog.dismiss();
-                }
-            });
+            drawView.setErase(false);
+            drawView.setBrush("point");
 
-            //Boton grande
-            ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
-            largeBtn.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setBrushSize(largeBrush);
-                    drawView.setLastBrushSize(largeBrush);
-                    drawView.setErase(false);
-                    drawView.setBrush("point");
-                    brushDialog.dismiss();
-                }
-            });
-            brushDialog.show();
         }
         else if(view.getId()==R.id.erase_btn){
             //switch to erase - choose size
-            final Dialog brushDialog = new Dialog(getActivity());
-            brushDialog.setTitle("Tamaño del Borrador:");
-            brushDialog.setContentView(R.layout.brush_chooser);
+            drawView.setErase(true);
+            drawView.setBrush("point");
 
-            ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
-            smallBtn.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setErase(true);
-                    drawView.setBrush("point");
-                    drawView.setBrushSize(smallBrush);
-                    brushDialog.dismiss();
-                }
-            });
-            ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
-            mediumBtn.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setErase(true);
-                    drawView.setBrush("point");
-                    drawView.setBrushSize(mediumBrush);
-                    brushDialog.dismiss();
-                }
-            });
-            ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
-            largeBtn.setOnClickListener(new OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    drawView.setErase(true);
-                    drawView.setBrush("point");
-                    drawView.setBrushSize(largeBrush);
-                    brushDialog.dismiss();
-                }
-            });
-            brushDialog.show();
         }
         else if(view.getId()==R.id.new_btn){
             //Boton Limpiar
@@ -273,9 +239,12 @@ public class Paint extends Fragment implements OnClickListener{
 
         }else if(view.getId()==R.id.line_btn){
             drawView.setBrush("line");
-            drawView.setBrushSize(smallBrush);
             drawView.setErase(false);
 
+        }else if(view.getId()==R.id.colores){
+
+            Intent myIntent = new Intent(Paint.this.getActivity() , DialogoPintura.class);
+            Paint.this.startActivityForResult(myIntent,1);
         }
         else if(view.getId() == R.id.voice_btn)
         {
@@ -293,4 +262,13 @@ public class Paint extends Fragment implements OnClickListener{
 
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("color");
+                paintClicked(result);
+            }
+        }
+    }
 }

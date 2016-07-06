@@ -61,6 +61,6 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
 
     public void paintClicked(View view){
         //use chosen color
-        Vent_Pizarra.paintClicked(view);
+        //Vent_Pizarra.paintClicked(view);
     }
 }

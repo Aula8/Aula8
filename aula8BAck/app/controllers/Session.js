@@ -47,15 +47,15 @@ exports.findSessionByTheme = async(function* (req, res) {
 exports.findSessionBySubject = function (req, res) {
 	console.log(req.body.subject, req.params.subject);
 	Subject.findOne({name: req.params.subject}, function(error, subject){
-		return res.send({session: subject});
-		Session.findOne({subject: subject.id}, function(err, session){
+		Session.find({subject: subject.id}, function(err, session){
 			if(!session)
 			{
 				res.statusCode = 404;
 				return res.send({error: 'Not found'});
 			}
 			if(session){
-				return res.send({session: session});
+				console.log(session);
+				return res.send(session);
 			}else
 			{
 				res.statusCode = 500

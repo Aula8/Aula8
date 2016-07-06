@@ -66,6 +66,8 @@ public class Fragmento extends Fragment{
         adaptador = new AdaptadorSala(datos);
         reciclerView.setAdapter(adaptador);
 
+
+
         return rootView;
     }
 }

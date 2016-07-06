@@ -50,7 +50,7 @@ module.exports = function (app, passport) {
   app.get('/private', auth.ensureAuthenticated);
   //app.get('/users/subject', users.subject);
   app.get('/users/:username', users.findUser)
-  app.post('/sessions/:subject', sessions.findSessionBySubject);
+  app.get('/sessions/:subject', sessions.findSessionBySubject);
 
   console.log('Express app started on port ' + port);
 
