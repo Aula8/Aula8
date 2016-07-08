@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,15 @@ import android.widget.ImageButton;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.json.JSONException;
+
+import java.io.File;
+
+import io.socket.emitter.Emitter;
 
 
 /**
@@ -40,10 +48,13 @@ public class Paint extends Fragment implements OnClickListener{
     private OnFragmentInteractionListener mListener;
 
     private DrawingView drawView;
-    private ImageButton  drawBtn, eraseBtn, newBtn, lineBtn, colores, voiceBtn;;
+    private ImageButton  drawBtn, eraseBtn, newBtn, lineBtn, colores, voiceBtn;
+    private ImageButton  sigBtn, prevBtn, pdfBtn, zinTtn, zoutBtn;
+    private PDFImageView pdf;
     private float TamañoPincel;
     private SeekBar BarraPincel;
     private TextView TextoTamañoPincel;
+    private ImageView imageView;
     public Paint() {
         // requiere constructor vacio
     }
@@ -57,7 +68,8 @@ public class Paint extends Fragment implements OnClickListener{
      * @return A new instance of fragment Paint.
      */
     // TODO: Rename and change types and number of parameters
-    public static Paint newInstance(String param1, String param2) {
+    public static Paint newInstance(String param1, String param2)
+    {
         Paint fragment = new Paint();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -67,7 +79,8 @@ public class Paint extends Fragment implements OnClickListener{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -87,7 +100,8 @@ public class Paint extends Fragment implements OnClickListener{
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
 
         super.onViewCreated(view, savedInstanceState);
         drawView = (DrawingView)getView().findViewById(R.id.drawing);
@@ -138,13 +152,33 @@ public class Paint extends Fragment implements OnClickListener{
         newBtn.setOnClickListener(this);
         lineBtn = (ImageButton)getView().findViewById(R.id.line_btn);
         lineBtn.setOnClickListener(this);
+        sigBtn = (ImageButton) getView().findViewById(R.id.prox);
+        sigBtn.setOnClickListener(this);
+        prevBtn = (ImageButton) getView().findViewById(R.id.prev);
+        prevBtn.setOnClickListener(this);
+        pdfBtn = (ImageButton) getView().findViewById(R.id.cargarpdf);
+        pdfBtn.setOnClickListener(this);
+        zinTtn = (ImageButton) getView().findViewById(R.id.zoomdown);
+        zinTtn.setOnClickListener(this);
+        zoutBtn = (ImageButton) getView().findViewById(R.id.zoomup);
+        zoutBtn.setOnClickListener(this);
+
 
         voiceBtn = (ImageButton)getView().findViewById(R.id.voice_btn);
         voiceBtn.setOnClickListener(this);
+        imageView = (ImageView)getView().findViewById(R.id.PDF);
+        pdf = null;
+        Servidor.anadirEventoRecibidoAlSocket("descargar pdf",onNewPDF);
+        Servidor.anadirEventoRecibidoAlSocket("pag_sig",onSigPag);
+        Servidor.anadirEventoRecibidoAlSocket("pag_prev",onPrevPag);
+        Servidor.anadirEventoRecibidoAlSocket("zoom_in",onZoomIn);
+        Servidor.anadirEventoRecibidoAlSocket("zoom_out",onZoomOut);
     }
 
+
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Uri uri)
+    {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
@@ -166,7 +200,6 @@ public class Paint extends Fragment implements OnClickListener{
         super.onDetach();
         mListener = null;
     }
-
 
 
     /**
@@ -217,7 +250,8 @@ public class Paint extends Fragment implements OnClickListener{
             drawView.setBrush("point");
 
         }
-        else if(view.getId()==R.id.new_btn){
+        else if(view.getId()==R.id.new_btn)
+        {
             //Boton Limpiar
 
             AlertDialog.Builder newDialog = new AlertDialog.Builder(getActivity());
@@ -259,6 +293,77 @@ public class Paint extends Fragment implements OnClickListener{
                 voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_busy));
             }
         }
+        else if(view.getId() == R.id.zoomdown)
+        {
+            if(pdf!=null)
+            {
+                try
+                {
+                    pdf.zoomOut();
+                    Servidor.enviarEvento("zoom_out");
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        else if(view.getId() == R.id.zoomup)
+        {
+            try
+            {
+                pdf.zoomIn();
+                Servidor.enviarEvento("zoom_in");
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else if(view.getId() ==  R.id.prox)
+        {
+            try
+            {
+                pdf.nextPage();
+                Servidor.enviarEvento("pag_sig");
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else if(view.getId() ==  R.id.prev)
+        {
+            try
+            {
+                pdf.prevPage();
+                Servidor.enviarEvento("pag_prev");
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else if(view.getId() == R.id.cargarpdf)
+        {
+            new FileChooser((Activity) getContext()).setFileListener(new FileChooser.FileSelectedListener()
+            {
+                @Override
+                public void fileSelected(final File file)
+                {
+                    try
+                    {
+                        if(file.getName().endsWith(".pdf"))
+                        {
+                            pdf = new PDFImageView(file.getAbsolutePath(),imageView);
+                            replicarPDF(file);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        pdf = null;
+                    }
+                }
+            }).showDialog();
+
+        }
 
     }
 
@@ -271,4 +376,145 @@ public class Paint extends Fragment implements OnClickListener{
             }
         }
     }
+
+    private void replicarPDF(final File file)
+    {
+        Thread hiloReplicacionPDF = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    //Aqui tiene que ir el nombre de la carpeta de la clase
+                    //Cambiar PDF_ACTUAL por la carpeta donde se vaya a guardar el PDF..
+                    FilesController.uploadFile(file, "PDF_ACTUAL/");
+                    Servidor.enviarEvento("descargar pdf", "PDF_ACTUAL/"+file.getName() );
+
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+        hiloReplicacionPDF.start();
+
+    }
+
+    Emitter.Listener onNewPDF = new Emitter.Listener()
+    {
+        @Override
+        public void call(Object... args)
+        {
+            String dir = (String)args[0];
+            System.out.println(dir);
+            FilesController.donwloadFile(dir);
+            int p = dir.lastIndexOf("/");
+            final String filename = Utils.getA8Folder()+dir.substring(p);
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    File f = new File(filename);
+
+                    while(!f.exists());
+                    try
+                    {
+                        pdf = new PDFImageView(filename,imageView);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
+    };
+
+    Emitter.Listener onSigPag = new Emitter.Listener()
+    {
+        @Override
+        public void call(Object... args)
+        {
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if(pdf != null)
+                        try {
+                            pdf.nextPage();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                }
+            });
+        }
+    };
+
+    Emitter.Listener onPrevPag = new Emitter.Listener()
+    {
+        @Override
+        public void call(Object... args)
+        {
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if(pdf != null)
+                        try {
+                            pdf.prevPage();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                }
+            });
+        }
+    };
+
+    Emitter.Listener onZoomIn = new Emitter.Listener()
+    {
+        @Override
+        public void call(Object... args)
+        {
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if(pdf != null)
+                        try {
+                            pdf.zoomIn();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                }
+            });
+        }
+    };
+
+    Emitter.Listener onZoomOut = new Emitter.Listener()
+    {
+        @Override
+        public void call(Object... args)
+        {
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if(pdf != null)
+                        try {
+                            pdf.zoomOut();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                }
+            });
+        }
+    };
 }

@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    
+    <uses-permission android:name="Window.FEATURE_ACTIVITY_TRANSITIONS"/>
 
     <application
         android:allowBackup="true"
@@ -22,23 +24,23 @@
             android:name=".aula8.login.Splash"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".aula8.login.LoginActivity"
-                android:configChanges = "orientation"
-                android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".aula8.login.LoginActivity"
+                android:configChanges = "orientation"
+                android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".aula8.lobby.MainActivityLobby"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape">
         </activity>

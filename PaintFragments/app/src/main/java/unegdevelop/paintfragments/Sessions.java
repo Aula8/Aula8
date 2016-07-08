@@ -15,7 +15,6 @@ public class Sessions {
     public String files_folder;
     public String boadr;
 
-
     public String getTheme() {
         return theme;
     }

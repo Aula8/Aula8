@@ -1,16 +1,52 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="unegdevelop.paintfragments.chat">
+    android:orientation="vertical"
+    tools:context=".aula8.Chat.FragmentChat">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <ImageView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/messages"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:layout_gravity="center"
-        android:src="@drawable/chat"
-        />
-</FrameLayout>
+        android:layout_height="0dp"
+        android:layout_weight="2225.28"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideOverlay"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <!-- <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#673ab7"
+            android:contentDescription="@string/action_add"/> -->
+        <EditText
+            android:id="@+id/message_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/prompt_message"
+            android:imeActionId="@+id/send"
+            android:imeActionLabel="@string/action_send"
+            android:imeOptions="actionSend"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:maxLength="230"
+            android:isScrollContainer="true"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="#1e88e5"
+            android:contentDescription="@string/action_send"/>
+    </LinearLayout>
+</LinearLayout>

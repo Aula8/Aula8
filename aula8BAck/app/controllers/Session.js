@@ -89,23 +89,32 @@ exports.findSessionByDate = function (req, res) {
 	Insert ssesion in the db
 */
 exports.create = async(function* (req, res){
-	const Session= new Session(req.body);
-	Session.save(function(err, session){
-		if(!err){
-			console.log("Session created");
-			return res.send({ status: 'OK', session:session});
-		}else{
-			console.log(err);
-			if(err.name == 'ValidationError'){
-					res.statusCode=400;
-					res.send({error:'ValidationError'});
-				}else{
-				res.statusCode=500;
-				res.send({error: 'Server error'});
-				}
-				console.log('Internal error(%d): %s',res.statusCode,err.message);
-		}
-	})
+	//const Session= new Session(req.body);
+	console.log(req.body.subject, req.body.session);
+	Subject.findOne({name: req.body.subject}, function(error, subject){
+		const session = new Session({
+			theme: req.body.session,
+			subject: subject.id,
+		});
+
+		session.save(function(err, session){
+			if(!err){
+				console.log("Session created");
+				return res.send({ status: 'OK', session:session});
+			}else{
+				console.log(err);
+				if(err.name == 'ValidationError'){
+						res.statusCode=400;
+						res.send({error:'ValidationError'});
+					}else{
+					res.statusCode=500;
+					res.send({error: 'Server error'});
+					}
+					console.log('Internal error(%d): %s',res.statusCode,err.message);
+			}
+		});
+	});
+
 });
 
 //Created by: Ricardo Vasquez 26073680

@@ -135,6 +135,7 @@ public class AudioStream
 
         while (recording)
         {
+
             bufferResult = grabador.read(audioBuffer,0, buffersize);
             //Se Verifica si hay sonido o no.. 
             if(isNoisy(bufferResult,audioBuffer))

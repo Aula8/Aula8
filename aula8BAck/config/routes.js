@@ -20,15 +20,14 @@ const mongoose = require('mongoose');
 const Session = mongoose.model('Session');
 const Subject = mongoose.model('Subject');
 
+const path = require('path');
+
+var mkdirp = require('mkdirp');
+var fs = require('fs');
 var numUsuarios = 0;
-var ROOMS = {};
+var ROOM;
 var CLIENTS = {};
 
-for (var i = 0; i < 3; i++)
-{
-  ROOMS["room"+i] = "room" + i;
-}
-ROOMS["room"+3] = "room" + 3;
 
 /**
  * Expose routes
@@ -40,7 +39,7 @@ module.exports = function (app, passport) {
   const io = require('socket.io').listen(app.listen(port));
   app.post('/create/user', users.create);
   app.post('/create/section', sections.create);
-  app.post('/create/session', sessions.create);
+  app.post('/sessions/create', sessions.create);
   app.post('/create/subject', subjects.create);
   app.post('/create/subjectuser', subjectusers.create);
   app.post('/auth/login', users.login);
@@ -56,7 +55,7 @@ module.exports = function (app, passport) {
 
 
   io.on('connection', function(socket) {  
-      console.log('Un cliente se ha conectado');
+    console.log('Un cliente se ha conectado');
 
     socket.on('credentials', function(data) {  
         console.log(data);
@@ -72,12 +71,10 @@ module.exports = function (app, passport) {
           socket.room = room;
         }else{
           console.log("user conectado en la sala ", room.split("\"")[1] );
-          socket.room = room.split("\"")[1];
+
         }
         socket.join (room);
-      }
-
-    );
+      });
 
     socket.on('send_audio', function(data)
     {
@@ -87,7 +84,7 @@ module.exports = function (app, passport) {
 
     socket.on('nuevo mensaje', function (data) {
       console.log("nuevo mensaje de ", socket.username, data, "en la sala ", socket.room);
-      socket.broadcast.to(socket.room).emit('nuevo mensaje', {
+      socket.broadcast.emit('nuevo mensaje', {
         nombre_Usuario: socket.username,
         mensaje: data
       });
@@ -101,11 +98,11 @@ module.exports = function (app, passport) {
       socket.username = nombre_Usuario;
       ++numUsuarios;
       usuarioAñadido = true;
-      socket.emit('iniciar sesion', {
+      socket.to(data.room).emit('iniciar sesion', {
         numUsuarios: numUsuarios
       });
 
-      socket.broadcast.to(socket.room).emit('usuario unido', {
+      socket.broadcast.emit('usuario unido', {
         nombre_Usuario: socket.username,
         numUsuarios: numUsuarios
       });
@@ -116,20 +113,20 @@ module.exports = function (app, passport) {
 
     socket.on('escribiendo', function ()
     {
-      socket.broadcast.to(socket.room).emit('escribiendo', {
+      socket.broadcast.emit('escribiendo', {
         nombre_Usuario: socket.username
       });
     });
 
 
     socket.on('no escribiendo', function () {
-      socket.broadcast.to(socket.room).emit('no escribiendo', {
+      socket.broadcast.emit('no escribiendo', {
         nombre_Usuario: socket.username
       });
     });
 
     socket.on('enviar imagen', function (data) {
-      socket.broadcast.to(socket.room).emit('enviar imagen', {
+      socket.broadcast.emit('enviar imagen', {
         nombre_Usuario: socket.username,
         img_Codificada: data
       });
@@ -138,7 +135,7 @@ module.exports = function (app, passport) {
     socket.on("pintar", function(data)
     {
         socket.broadcast.emit("pintar",data);
-        console.log(data);
+        console.log("pintando en ", socket.room);
     });
 
     socket.on("borrar todo", function()
@@ -154,7 +151,7 @@ module.exports = function (app, passport) {
 
         console.log('Alguien se desconectó de Aula 8', socket.request.connection._peername);
 
-        socket.broadcast.to(socket.room).emit('usuario desconectado', {
+        socket.broadcast.emit('usuario desconectado', {
           nombre_Usuario: socket.username,
           numUsuarios: numUsuarios
         });
@@ -182,5 +179,67 @@ module.exports = function (app, passport) {
           });
     });
 
+    socket.on("enviar archivo", function(data)
+    {
+        base64_decode(data.data,data.nombre,data.direccion);
+    });
+
+    socket.on("bajar archivo", function(data)
+    {
+      console.log("recibido");
+        fs.exists(data, function(exists) 
+        {
+            console.log("exists?");
+            if (exists) 
+            {   
+              console.log("exists true");
+                fs.readFile(data, function (err, file) 
+                {
+                  if (err) 
+                  {
+                    socket.emit("error 404");
+                  }
+                  else
+                  {
+                    
+                    console.log(path.basename(data));
+                    socket.emit("archivo enviado", 
+                    {
+                        archivo: file.toString('base64'),
+                        nombre: path.basename(data)
+                    });
+                  }
+
+                });
+            }
+            else
+                socket.emit("error 404");
+            
+        });
+    });
+
   });
+
+
+  function base64_decode(file,name,direccion) 
+  {
+      // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
+      
+      mkdirp(direccion, function (err) 
+      {
+          if (err) 
+          {
+              console.log("NWBNA DE ERROR ..");
+          }    
+          else 
+          {   
+              var bitmap = new Buffer(file, 'base64');
+              fs.writeFileSync(direccion+name, bitmap);
+          } 
+      });
+
+      //
+      console.log('******** File created from base64 encoded string ********');
+  }
+
 };

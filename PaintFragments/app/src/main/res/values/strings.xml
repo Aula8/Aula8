@@ -25,4 +25,28 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="pes1String">Fragment 1</string>
+    <string name="pes2String">Fragment 1</string>
+
+    <string name="prompt_username">Tu nombre</string>
+    <string name="message_welcome">Bienvenido a Aula 8</string>
+    <plurals name="message_participants">
+        <item quantity="one">hay %d participante</item>
+        <item quantity="other">hay %d participantes</item>
+    </plurals>
+    <string name="action_send">Enviar</string>
+    <string name="action_attach">Adjuntar</string>
+    <string name="action_add">Agregar</string>
+    <string name="action_mic">Grabacion</string>
+
+    <string name="prompt_message">Mensaje</string>
+    <string name="action_leave">Salir</string>
+    <string name="action_seleccionar">Seleccionar</string>
+    <string name="error_connect">Conexión fallida</string>
+
+    <string name="message_user_joined">%s se ha unido</string>
+    <string name="message_user_left">%s se ha ido</string>
+    <string name="user_action_typing">está escribiendo</string>
+    <string name="asignaturas">Asignaturas</string>
 </resources>

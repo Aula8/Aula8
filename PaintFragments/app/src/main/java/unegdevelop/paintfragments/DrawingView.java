@@ -17,6 +17,8 @@ import android.util.TypedValue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.logging.Handler;
+
 import io.socket.emitter.Emitter;
 
 /**
@@ -47,7 +49,8 @@ public class DrawingView extends View
 
     private String brush = "point";
 
-    public DrawingView(Context context, AttributeSet attrs) {
+    public DrawingView(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
         setupDrawing();
     }
@@ -68,14 +71,15 @@ public class DrawingView extends View
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
 
+
         Servidor.anadirEventoRecibidoAlSocket("pintar",drawListener);
         Servidor.anadirEventoRecibidoAlSocket("borrar todo", eraseAllListener);
 
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//view given size
+    protected void onSizeChanged(int w, int h, int oldw, int oldh)
+    {
         super.onSizeChanged(w, h, oldw, oldh);
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
@@ -238,7 +242,6 @@ public class DrawingView extends View
     public void setBrushSize(float newSize)
     {
 
-
         float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 newSize, getResources().getDisplayMetrics());
         brushSize = pixelAmount;
@@ -389,10 +392,14 @@ public class DrawingView extends View
             JSONObject obj = (JSONObject) args[0];
             try
             {
-                if(obj.getString("brush").equals("point"))
-                    pintarStreamPunto(obj);
-                else
-                    pintarStreamLinea(obj);
+                if(drawCanvas!= null)
+                {
+                    if(obj.getString("brush").equals("point"))
+                        pintarStreamPunto(obj);
+                    else
+                        pintarStreamLinea(obj);
+                }
+
             }
             catch (JSONException e)
             {
@@ -417,7 +424,6 @@ public class DrawingView extends View
             });
         }
     };
-
 
 
 }

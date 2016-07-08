@@ -1,31 +1,27 @@
 package unegdevelop.paintfragments.aula8.lobby;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -36,6 +32,7 @@ import unegdevelop.paintfragments.R;
 import unegdevelop.paintfragments.MainActivity;
 import unegdevelop.paintfragments.Servidor;
 import unegdevelop.paintfragments.Sessions;
+import unegdevelop.paintfragments.SessionsAdapter;
 import unegdevelop.paintfragments.webServices;
 
 
@@ -99,46 +96,22 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
             public void onClick(final View v) {
                 //new getSessions(holder, v, v.getContext()).execute((Void) null);
 
-                RestAdapter retrofit = new RestAdapter.Builder()
-                        .setEndpoint(Servidor.URL)
-                        .setLogLevel(RestAdapter.LogLevel.FULL)
-                        .setClient(new OkClient(new OkHttpClient()))
-                        .build();
-                webServices apiService = retrofit.create(webServices.class);
-                apiService.getSessions(holder.materia.getText().toString() ,new Callback<List<Sessions>>() {
+                webServices apiService = Servidor.createService(webServices.class);
+                apiService.getSessions(holder.materia.getText().toString(),new Callback<List<Sessions>>() {
                     @Override
-                    public void success(List<Sessions> session, Response response) {
-                        String[] elementos;
-                        ArrayList<String> array = new ArrayList<String>();
-
-                        for(int i=0; i<session.size(); i++){
-                            array.add(session.get(i).getTheme());
-                        }
-
-                        elementos = array.toArray(new String[array.size()]);
-
-                        AlertDialog.Builder sub = new AlertDialog.Builder(holder.tarjeta.getContext());
-                        LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        dialogView = inflater.inflate( R.layout.subject_dialog, null );
-
-                        TextView subject = (TextView) dialogView.findViewById(R.id.materia);
-                        subject.setText(holder.materia.getText());
-                        TextView theme = (TextView) dialogView.findViewById(R.id.tema);
-                        theme.setText(holder.tema.getText());
-
-                        ListView sessions = (ListView) dialogView.findViewById(R.id.sessions);
-                        ArrayAdapter<String> stringArray = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_expandable_list_item_1, elementos);
-                        sessions.setAdapter(stringArray);
-
-                        sub.setView(dialogView);
-                        AlertDialog alertDialog = sub.create();
-                        alertDialog.show();
-
+                    public void success(List<Sessions> tasks, Response response) {
+                        // here you do stuff with returned tasks
+                        FragmentActivity activity = (FragmentActivity)(v.getContext());
+                        FragmentManager fm = activity.getSupportFragmentManager();
+                        DialogDetailsCard alertDialog = new DialogDetailsCard();
+                        alertDialog.holder = holder;
+                        alertDialog.session = tasks;
+                        alertDialog.show(fm, "display_details");
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
-                        Toast.makeText(v.getContext(), error.toString() ,Toast.LENGTH_LONG).show();
+                        // you should handle errors, too
                     }
                 });
 
@@ -150,9 +123,9 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
         holder.botonEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "has entrado en la sala: " + lista.get(position).getMateria(), Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
-                ((Activity) v.getContext()).startActivity(myIntent);
+                //Toast.makeText(v.getContext(), "has entrado en la sala: " + lista.get(position).getMateria(), Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent( v.getContext() , MainActivity.class);
+                v.getContext().startActivity(myIntent);
             }
         });
 
@@ -167,10 +140,12 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
         CardView tarjeta;
         TextView tema, materia, seccion, owner, usuariosConectados, usuariosMaximos;
         Button botonEntrar;
+        Context myContext;
 
 
         public ViewHolderSala(final View itemView) {
             super(itemView);
+            myContext = itemView.getContext();
             tarjeta = (CardView) itemView.findViewById(R.id.tarjeta);
             tema = (TextView) itemView.findViewById(R.id.tema);
             materia = (TextView) itemView.findViewById(R.id.materia);
@@ -199,6 +174,7 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
             */
 
         }
+
     }
 
 }

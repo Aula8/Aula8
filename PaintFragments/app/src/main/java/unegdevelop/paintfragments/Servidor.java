@@ -29,6 +29,7 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,9 @@ import io.socket.client.IO;
 import io.socket.client.Manager;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 
 /**
  * Created by Slaush on 22/05/2016.
@@ -61,6 +65,7 @@ public class Servidor
 
     static public String URL;
     static public Socket socket;
+    static  public String room;
     static public HttpRequest request;
 
 
@@ -70,6 +75,8 @@ public class Servidor
     public static JSONArray jsonObjSessions;
     public static JSONArray jsonObjSections;
     public static JSONArray jsonObjSubjectsProfessors;
+
+    private static RestAdapter.Builder builder = null;
 
 
     private Servidor(){}
@@ -114,11 +121,6 @@ public class Servidor
 
         }catch( Exception e) {
             e.printStackTrace();
-        }
-        finally {
-            if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
-                urlConnection.setRequestProperty("Connection", "close");
-            }
         }
 
         return result.toString();
@@ -193,6 +195,10 @@ public class Servidor
                 esperar(ESPERA_ENTRE_CONEXIONES);
                 if (socket.connected()) {
                     URL = prueba;
+                    builder = new RestAdapter.Builder()
+                            .setEndpoint(URL)
+                            .setLogLevel(RestAdapter.LogLevel.FULL)
+                            .setClient(new OkClient(new OkHttpClient()));
                     break;
                 }
             } catch (URISyntaxException e) {
@@ -242,6 +248,11 @@ public class Servidor
         {
 
         }
+    }
+
+    public static <S> S createService(Class<S> serviceClass) {
+        RestAdapter adapter = builder.build();
+        return adapter.create(serviceClass);
     }
 
 }

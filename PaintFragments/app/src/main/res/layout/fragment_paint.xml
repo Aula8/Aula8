@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/brush"
-                android:src="@drawable/brush" />
+                android:src="@drawable/linea" />
 
             <ImageButton
                 android:id="@+id/erase_btn"
@@ -51,20 +51,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:contentDescription="Voice"
-                android:src="@android:drawable/presence_audio_online" />
+                android:src="@drawable/microfono" />
         </LinearLayout>
 
-
-        <unegdevelop.paintfragments.DrawingView
-            android:id="@+id/drawing"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="3dp"
             android:layout_weight="1"
-            android:background="#FFFFFFFF" />
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:id="@+id/PDF"
+                android:background="#ffffff"
+                android:cropToPadding="false" />
+
+            <unegdevelop.paintfragments.DrawingView
+                android:id="@+id/drawing"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="3dp"
+                android:background="#00ffffff"
+                android:contextClickable="false" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
 
                 <ImageButton
@@ -110,6 +128,36 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/colores"
                     android:src="@drawable/paleta" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/zoomup"
+                    android:src="@drawable/mas" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/zoomdown"
+                    android:src="@drawable/menos" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prev"
+                    android:src="@drawable/flechaizq" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prox"
+                    android:src="@drawable/flechader" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cargarpdf"
+                    android:src="@drawable/pdf" />
             </LinearLayout>
 
         </LinearLayout>
