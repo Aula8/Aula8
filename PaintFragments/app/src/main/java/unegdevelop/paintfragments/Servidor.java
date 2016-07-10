@@ -1,7 +1,12 @@
 package unegdevelop.paintfragments;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -22,11 +27,13 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URISyntaxException;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.widget.Toast;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import com.squareup.okhttp.OkHttpClient;
@@ -40,6 +47,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,14 +66,15 @@ import retrofit.client.OkClient;
 
 public class Servidor
 {
+    static public Application activity;
 
-    final static int ESPERA_ENTRE_CONEXIONES = 1000;
+    final static int ESPERA_ENTRE_CONEXIONES = 500;
     final static int INTENTOS_CONEXION = 20;
     final static String PUERTO = "3000";
 
     static public String URL;
     static public Socket socket;
-    static  public String room;
+    static public String room;
     static public HttpRequest request;
 
 
@@ -179,21 +188,29 @@ public class Servidor
         socket.off(nombreEvento);
     }
 
-    public static void start()
-    {
+    public static void start() {
         String prueba;
+        String numero;
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
         opts.reconnection = true;
 
-        for (int i = 0; i <= INTENTOS_CONEXION; i++) {
-            try {
-                prueba = "http://192.168.1." + String.valueOf(i) + ":" + PUERTO + "/";
+        for (int i = 0; i <= INTENTOS_CONEXION; i++)
+        {
+            try
+            {
+
+                if(i>10)
+                    numero = "1"+i;
+                else
+                    numero = "10"+i;
+                prueba = "http://192.168.1." + numero + ":" + PUERTO;
                 socket = IO.socket(prueba, opts);
                 socket.connect();
                 anadirEventosSocket();
                 esperar(ESPERA_ENTRE_CONEXIONES);
-                if (socket.connected()) {
+                if (socket.connected())
+                {
                     URL = prueba;
                     builder = new RestAdapter.Builder()
                             .setEndpoint(URL)
@@ -201,19 +218,40 @@ public class Servidor
                             .setClient(new OkClient(new OkHttpClient()));
                     break;
                 }
-            } catch (URISyntaxException e) {
+            }
+            catch (URISyntaxException e)
+            {
                 e.printStackTrace();
             }
         }
 
-            /*URL = "http://192.168.1.3:" + PUERTO + "/";
-                try {
-                socket = IO.socket(URL);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-                socket.connect();*/
+        /*URL = "http://192.168.1.4:3000/";
+        builder = new RestAdapter.Builder()
+                .setEndpoint(URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setClient(new OkClient(new OkHttpClient()));
+        try {
+            socket = IO.socket(URL, opts);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        socket.connect();*/
 
+    }
+
+    public static InetAddress getBroadcastAddress() throws UnknownHostException {
+        WifiManager wifi = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+        if(dhcp == null) {
+            throw new UnknownHostException();
+        }
+
+        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+        byte[] quads = new byte[4];
+        for (int k = 0; k < 4; k++) {
+            quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+        }
+        return InetAddress.getByAddress(quads);
     }
 
 

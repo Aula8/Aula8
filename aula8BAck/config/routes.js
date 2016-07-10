@@ -37,6 +37,12 @@ module.exports = function (app, passport) {
 
   // user routes
   const io = require('socket.io').listen(app.listen(port));
+
+  app.get('/check_connection', function(req, res){
+    res.statusCode=200;
+    return res.send();
+  });
+
   app.post('/create/user', users.create);
   app.post('/create/section', sections.create);
   app.post('/sessions/create', sessions.create);
@@ -78,13 +84,13 @@ module.exports = function (app, passport) {
 
     socket.on('send_audio', function(data)
     {
-        socket.broadcast.emit('get_audio', data);
+        socket.in(socket.room).emit('get_audio', data);
         console.log('recibiendo audio');
     });
 
     socket.on('nuevo mensaje', function (data) {
       console.log("nuevo mensaje de ", socket.username, data, "en la sala ", socket.room);
-      socket.broadcast.emit('nuevo mensaje', {
+      socket.in(socket.room).emit('nuevo mensaje', {
         nombre_Usuario: socket.username,
         mensaje: data
       });
@@ -102,7 +108,7 @@ module.exports = function (app, passport) {
         numUsuarios: numUsuarios
       });
 
-      socket.broadcast.emit('usuario unido', {
+      socket.in(socket.room).emit('usuario unido', {
         nombre_Usuario: socket.username,
         numUsuarios: numUsuarios
       });
@@ -113,20 +119,20 @@ module.exports = function (app, passport) {
 
     socket.on('escribiendo', function ()
     {
-      socket.broadcast.emit('escribiendo', {
+      socket.in(socket.room).emit('escribiendo', {
         nombre_Usuario: socket.username
       });
     });
 
 
     socket.on('no escribiendo', function () {
-      socket.broadcast.emit('no escribiendo', {
+      socket.in(socket.room).emit('no escribiendo', {
         nombre_Usuario: socket.username
       });
     });
 
     socket.on('enviar imagen', function (data) {
-      socket.broadcast.emit('enviar imagen', {
+      socket.in(socket.room).emit('enviar imagen', {
         nombre_Usuario: socket.username,
         img_Codificada: data
       });
@@ -134,13 +140,13 @@ module.exports = function (app, passport) {
 
     socket.on("pintar", function(data)
     {
-        socket.broadcast.emit("pintar",data);
+        socket.in(socket.room).emit("pintar",data);
         console.log("pintando en ", socket.room);
     });
 
     socket.on("borrar todo", function()
     {
-        socket.broadcast.emit("borrar todo");
+        socket.in(socket.room).emit("borrar todo");
         console.log("Borrar todo");
     });
 
@@ -151,7 +157,7 @@ module.exports = function (app, passport) {
 
         console.log('Alguien se desconectó de Aula 8', socket.request.connection._peername);
 
-        socket.broadcast.emit('usuario desconectado', {
+        socket.in(socket.room).emit('usuario desconectado', {
           nombre_Usuario: socket.username,
           numUsuarios: numUsuarios
         });

@@ -20,6 +20,9 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
+
+import io.socket.client.IO;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

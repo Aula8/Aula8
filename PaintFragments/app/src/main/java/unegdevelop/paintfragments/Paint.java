@@ -284,13 +284,25 @@ public class Paint extends Fragment implements OnClickListener{
         {
             if(AudioStream.isRecording())
             {
-                AudioStream.stopRecording();
-                voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_online));
+                Thread stop_recording = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AudioStream.stopRecording();
+                        voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_online));
+                    }
+                });
+                stop_recording.run();
             }
             else
             {
-                AudioStream.startRecording();
-                voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_busy));
+                Thread start_recording = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AudioStream.startRecording();
+                        voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_busy));
+                    }
+                });
+                start_recording.run();
             }
         }
         else if(view.getId() == R.id.zoomdown)
@@ -321,25 +333,33 @@ public class Paint extends Fragment implements OnClickListener{
         }
         else if(view.getId() ==  R.id.prox)
         {
-            try
-            {
-                pdf.nextPage();
-                Servidor.enviarEvento("pag_sig");
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            Thread nex_page = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        pdf.nextPage();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Servidor.enviarEvento("pag_sig");
+                }
+            });
+            nex_page.run();
         }
         else if(view.getId() ==  R.id.prev)
         {
-            try
-            {
-                pdf.prevPage();
-                Servidor.enviarEvento("pag_prev");
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            Thread pag_prev = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        pdf.prevPage();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Servidor.enviarEvento("pag_prev");
+                }
+            });
+            pag_prev.run();
         }
         else if(view.getId() == R.id.cargarpdf)
         {

@@ -18,6 +18,9 @@ import retrofit.http.Query;
  * Created by wuilkysb on 05/07/16.
  */
 public interface webServices {
+    @GET("/check_connection")
+    void getConnection();
+
     @GET("/sessions/{subject}")
     void getSessions(@Path("subject") String subject, Callback<List<Sessions>> callback);
 
