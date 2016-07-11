@@ -14,7 +14,6 @@ const subjects = require('../app/controllers/Subject');
 const subjectusers = require('../app/controllers/SubjectUser');
 const question = require('../app/controllers/Question');
 const auth = require('./middlewares/authorization');
-const port = process.env.PORT || 3000;
 
 const mongoose = require('mongoose');
 const Session = mongoose.model('Session');
@@ -38,14 +37,13 @@ ROOMS["room"+3] = "room" + 3;
  * Expose routes
  */
 
-module.exports = function (app, passport) 
+module.exports = function (app, io, passport) 
 {
 
   // user routes
-  const io = require('socket.io').listen(app.listen(port));
   app.post('/create/user', users.create);
   app.post('/create/section', sections.create);
-  app.post('/create/session', sessions.create);
+  app.post('/sessions/create', sessions.create);
   app.post('/create/subject', subjects.create);
   app.post('/create/subjectuser', subjectusers.create);
   app.post('/auth/login', users.login);
@@ -57,7 +55,6 @@ module.exports = function (app, passport)
   app.get('/users/:username', users.findUser)
   app.get('/sessions/:subject', sessions.findSessionBySubject);
 
-
   //Agregue ESTO #Mota 
   app.get('/:file(*)', function(req, res, next)
   {
@@ -67,9 +64,6 @@ module.exports = function (app, passport)
     res.download(path);
   });
 
-
-
-  console.log('Express app started on port ' + port);
 
 
   io.on('connection', function(socket) {  
@@ -267,39 +261,4 @@ function base64_decode(file,name,direccion)
     //
     console.log('******** File created from base64 encoded string ********');
 }
-
-//Agregue ESTO TAMBIEN #Mota
-app.post('/upload', function(req, res) 
-{
-    console.log("\n\nBinary Upload Request from: " + req.ip);
-
-    var filename = req.headers["file-name"];
-    var room = req.headers["room"];
-    console.log("Started binary upload of: " + filename);
-    console.log(room, req.headers["room"], io.room);
-        
-    mkdirp(req.headers["file-folder"], function (err) 
-    {
-        if (err) 
-        {
-            console.log("Error ..");
-        }    
-        else 
-        {   
-            var filepath = path.resolve(req.headers["file-folder"], filename);
-            var out = fs.createWriteStream(filepath, { flags: 'w', encoding: 'binary', fd: null, mode: '644' });
-            req.pipe(out);
-            req.on('end', function() 
-            {
-                console.log("Finished binary upload of: " + filename + "\n  in: " + filepath);
-                res.sendStatus(200);
-                if(room != null)
-                {
-                  console.log("enviando evento");
-                  io.in(room).emit('descargar pdf', filepath);
-                }
-            });
-        } 
-    });
-});
 };

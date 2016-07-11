@@ -20,6 +20,8 @@ const passport = require('passport');
 const config = require('./config');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+var mkdirp = require('mkdirp');
+const path = require('path');
 require('./app/models/User');
 require('./app/models/Subject');
 require('./app/models/Section');
@@ -35,11 +37,49 @@ app.use(cors());
  */
 
 module.exports = app;
-
+const port = process.env.PORT || 3000;
 
 // Bootstrap routes
+const io = require('socket.io').listen(app.listen(port));
+
+console.log('Express app started on port ' + port);
+
+//Agregue ESTO TAMBIEN #Mota
+app.post('/upload', function(req, res) 
+{
+    console.log("\n\nBinary Upload Request from: " + req.ip);
+
+    var filename = req.headers["file-name"];
+    var room = req.headers["room"];
+    console.log("Started binary upload of: " + filename);
+    console.log(room, req.headers["room"], io.room);
+        
+    mkdirp(req.headers["file-folder"], function (err) 
+    {
+        if (err) 
+        {
+            console.log("Error ..");
+        }    
+        else 
+        {   
+            var filepath = path.resolve(req.headers["file-folder"], filename);
+            var out = fs.createWriteStream(filepath, { flags: 'w', encoding: 'binary', fd: null, mode: '644' });
+            req.pipe(out);
+            req.on('end', function() 
+            {
+                console.log("Finished binary upload of: " + filename + "\n  in: " + filepath);
+                res.sendStatus(200);
+                if(room != null)
+                {
+                  console.log("enviando evento");
+                  io.in(room).emit('descargar pdf', filepath);
+                }
+            });
+        } 
+    });
+});
 require('./config/express')(app);
-require('./config/routes')(app);
+require('./config/routes')(app, io);
 
 connect()
   .on('error', console.log)
