@@ -22,7 +22,7 @@ public class MainActivityLobby extends AppCompatActivity {
     private Bundle b;
 
     protected void onCreate(Bundle savedInstanceState) {
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); //orientacion de la pantalla bloqueada solo horizontal
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //orientacion de la pantalla bloqueada solo horizontal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
         //bAsignar = (Button)findViewById(R.id.bAsignar);

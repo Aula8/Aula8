@@ -60,6 +60,7 @@ public class DialogCreateSessions extends DialogFragment{
                     public void success(JSONObject tasks, Response response) {
                         // here you do stuff with returned tasks
                         Servidor.enviarEvento("room", tv.getText().toString());
+                        Servidor.room = tv.getText().toString();
                         Intent myIntent = new Intent( dialogView.getContext() , MainActivity.class);
                         dialogView.getContext().startActivity(myIntent);
                     }

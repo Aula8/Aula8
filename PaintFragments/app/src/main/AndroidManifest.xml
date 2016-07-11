@@ -11,8 +11,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    
-    <uses-permission android:name="Window.FEATURE_ACTIVITY_TRANSITIONS"/>
 
     <application
         android:allowBackup="true"
@@ -35,16 +33,28 @@
                 android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".aula8.lobby.MainActivityLobby"
-            android:label="@string/app_name"
-            android:screenOrientation="landscape">
-        </activity>
-        <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape">
+
         </activity>
+        <activity
+            android:name=".aula8.lobby.MainActivityLobby"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".DialogoPintura"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity android:name=".ShapeChooser"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity android:name=".TextBoxEdit"
             android:theme="@style/Theme.AppCompat.Dialog"
             android:screenOrientation="landscape">
         </activity>

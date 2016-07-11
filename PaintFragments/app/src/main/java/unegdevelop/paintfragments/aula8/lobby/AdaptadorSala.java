@@ -1,27 +1,33 @@
 package unegdevelop.paintfragments.aula8.lobby;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.design.widget.FloatingActionButton;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -32,14 +38,14 @@ import unegdevelop.paintfragments.R;
 import unegdevelop.paintfragments.MainActivity;
 import unegdevelop.paintfragments.Servidor;
 import unegdevelop.paintfragments.Sessions;
-import unegdevelop.paintfragments.SessionsAdapter;
 import unegdevelop.paintfragments.webServices;
 
 
 /**
  * Created by jarg95 on 09/06/16.
  */
-public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolderSala> {
+public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolderSala>
+{
 
     private ArrayList<Sala> lista;
     private View dialogView;
@@ -122,9 +128,10 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
 
         holder.botonEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //Toast.makeText(v.getContext(), "has entrado en la sala: " + lista.get(position).getMateria(), Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent( v.getContext() , MainActivity.class);
+            public void onClick(View v)
+            {
+                Toast.makeText(v.getContext(), "has entrado en la sala: " + lista.get(position).getMateria(), Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
                 v.getContext().startActivity(myIntent);
             }
         });
@@ -140,12 +147,10 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
         CardView tarjeta;
         TextView tema, materia, seccion, owner, usuariosConectados, usuariosMaximos;
         Button botonEntrar;
-        Context myContext;
 
 
         public ViewHolderSala(final View itemView) {
             super(itemView);
-            myContext = itemView.getContext();
             tarjeta = (CardView) itemView.findViewById(R.id.tarjeta);
             tema = (TextView) itemView.findViewById(R.id.tema);
             materia = (TextView) itemView.findViewById(R.id.materia);
@@ -174,7 +179,6 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
             */
 
         }
-
     }
 
 }

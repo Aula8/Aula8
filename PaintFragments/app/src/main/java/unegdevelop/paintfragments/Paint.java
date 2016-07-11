@@ -23,6 +23,9 @@ import android.widget.TextView;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import io.socket.emitter.Emitter;
 
@@ -48,8 +51,8 @@ public class Paint extends Fragment implements OnClickListener{
     private OnFragmentInteractionListener mListener;
 
     private DrawingView drawView;
-    private ImageButton  drawBtn, eraseBtn, newBtn, lineBtn, colores, voiceBtn;
-    private ImageButton  sigBtn, prevBtn, pdfBtn, zinTtn, zoutBtn;
+    private ImageButton  drawBtn, eraseBtn, newBtn, lineBtn, colores, voiceBtn,shapeBtn,textBoxBtn; //ALEX!!!!
+    private ImageButton  sigBtn, prevBtn, pdfBtn, zinTtn, zoutBtn, rotateBtn;
     private PDFImageView pdf;
     private float TamañoPincel;
     private SeekBar BarraPincel;
@@ -162,6 +165,13 @@ public class Paint extends Fragment implements OnClickListener{
         zinTtn.setOnClickListener(this);
         zoutBtn = (ImageButton) getView().findViewById(R.id.zoomup);
         zoutBtn.setOnClickListener(this);
+        rotateBtn = (ImageButton)getView().findViewById(R.id.rotar_pdf);
+        rotateBtn.setOnClickListener(this);
+        shapeBtn = (ImageButton) getView().findViewById(R.id.shape_btn);
+        shapeBtn.setOnClickListener(this);
+        textBoxBtn = (ImageButton) getView().findViewById(R.id.text_box_btn);
+        textBoxBtn.setOnClickListener(this);
+
 
 
         voiceBtn = (ImageButton)getView().findViewById(R.id.voice_btn);
@@ -173,6 +183,7 @@ public class Paint extends Fragment implements OnClickListener{
         Servidor.anadirEventoRecibidoAlSocket("pag_prev",onPrevPag);
         Servidor.anadirEventoRecibidoAlSocket("zoom_in",onZoomIn);
         Servidor.anadirEventoRecibidoAlSocket("zoom_out",onZoomOut);
+        Servidor.anadirEventoRecibidoAlSocket("rotar", onRotate);
     }
 
 
@@ -284,25 +295,13 @@ public class Paint extends Fragment implements OnClickListener{
         {
             if(AudioStream.isRecording())
             {
-                Thread stop_recording = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AudioStream.stopRecording();
-                        voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_online));
-                    }
-                });
-                stop_recording.run();
+                AudioStream.stopRecording();
+                voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_online));
             }
             else
             {
-                Thread start_recording = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AudioStream.startRecording();
-                        voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_busy));
-                    }
-                });
-                start_recording.run();
+                AudioStream.startRecording();
+                voiceBtn.setImageDrawable(getResources().getDrawable(android.R.drawable.presence_audio_busy));
             }
         }
         else if(view.getId() == R.id.zoomdown)
@@ -331,35 +330,38 @@ public class Paint extends Fragment implements OnClickListener{
                 e.printStackTrace();
             }
         }
+        else if(view.getId() == R.id.rotar_pdf)
+        {
+            try
+            {
+                pdf.rotar();
+                Servidor.enviarEvento("rotar");
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
         else if(view.getId() ==  R.id.prox)
         {
-            Thread nex_page = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        pdf.nextPage();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Servidor.enviarEvento("pag_sig");
-                }
-            });
-            nex_page.run();
+            try
+            {
+                pdf.nextPage();
+                Servidor.enviarEvento("pag_sig");
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         else if(view.getId() ==  R.id.prev)
         {
-            Thread pag_prev = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        pdf.prevPage();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Servidor.enviarEvento("pag_prev");
-                }
-            });
-            pag_prev.run();
+            try
+            {
+                pdf.prevPage();
+                Servidor.enviarEvento("pag_prev");
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
         else if(view.getId() == R.id.cargarpdf)
         {
@@ -370,29 +372,69 @@ public class Paint extends Fragment implements OnClickListener{
                 {
                     try
                     {
-                        if(file.getName().endsWith(".pdf"))
+                        if(pdf != null)
+                            pdf = null;
+                        if(file.getName().endsWith(".pdf") || file.getName().endsWith(".PDF"))
                         {
+
                             pdf = new PDFImageView(file.getAbsolutePath(),imageView);
                             replicarPDF(file);
                         }
+
                     }
                     catch (Exception e)
                     {
-                        pdf = null;
+                        e.printStackTrace();
                     }
                 }
             }).showDialog();
 
         }
+        else if(view.getId()==R.id.shape_btn)
+        {
 
+            Intent myIntent = new Intent(Paint.this.getActivity() , ShapeChooser.class);
+            Paint.this.startActivityForResult(myIntent,2);
+        }
+        else if(view.getId()==R.id.text_box_btn)
+        {
+            Intent myIntent = new Intent(Paint.this.getActivity() , TextBoxEdit.class);
+            Paint.this.startActivityForResult(myIntent,3);
+
+            /*if (drawView.getBrush().equals("text")){
+                textBoxBtn.setImageDrawable(getResources().getDrawable(R.drawable.text_box_selected));
+                drawView.setBrush("text");
+            }else{
+                textBoxBtn.setImageDrawable(getResources().getDrawable(R.drawable.text_box));
+                drawView.setBrush("text");
+            }*/
+
+
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
+        if (requestCode == 1) 
+        {
             if(resultCode == Activity.RESULT_OK){
                 String result=data.getStringExtra("color");
                 paintClicked(result);
+            }
+        }
+
+        if (requestCode == 2) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("shape");
+                drawView.setBrush(result);
+            }
+        }
+
+        if (requestCode == 3) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("text");
+                drawView.setCurrentText(result);
+                drawView.setBrush("text");
             }
         }
     }
@@ -408,11 +450,19 @@ public class Paint extends Fragment implements OnClickListener{
                 {
                     //Aqui tiene que ir el nombre de la carpeta de la clase
                     //Cambiar PDF_ACTUAL por la carpeta donde se vaya a guardar el PDF..
-                    FilesController.uploadFile(file, "PDF_ACTUAL/");
-                    Servidor.enviarEvento("descargar pdf", "PDF_ACTUAL/"+file.getName() );
+                    FilesController.uploadFile(file, "PDF_ACTUAL/",getContext(),true);
+                    //Por alguna extra;a razon no puede haber espacios en los nombres de los Archivos ...
+
 
                 }
                 catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (FileNotFoundException e)
+                {
+                    e.printStackTrace();
+                } catch (MalformedURLException e)
                 {
                     e.printStackTrace();
                 }
@@ -427,19 +477,35 @@ public class Paint extends Fragment implements OnClickListener{
         @Override
         public void call(Object... args)
         {
-            String dir = (String)args[0];
-            System.out.println(dir);
-            FilesController.donwloadFile(dir);
-            int p = dir.lastIndexOf("/");
-            final String filename = Utils.getA8Folder()+dir.substring(p);
-            getActivity().runOnUiThread(new Runnable()
+            final String dir = (String)args[0];
+
+            Activity a = getActivity();
+
+            a.runOnUiThread(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    File f = new File(filename);
+                    int idDownload = -1;
+                    try
+                    {
+                        idDownload = FilesController.donwloadFile(dir, getActivity().getApplicationContext());
 
-                    while(!f.exists());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    int p = dir.lastIndexOf("/");
+                    final String filename = Utils.getA8Folder()+ dir.substring(p);
+
+                    try
+                    {
+                        while(!FilesController.getDownloadState(idDownload));
+                        Thread.sleep(5);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                     try
                     {
                         pdf = new PDFImageView(filename,imageView);
@@ -530,6 +596,27 @@ public class Paint extends Fragment implements OnClickListener{
                     if(pdf != null)
                         try {
                             pdf.zoomOut();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                }
+            });
+        }
+    };
+
+    Emitter.Listener onRotate = new Emitter.Listener()
+    {
+        @Override
+        public void call(Object... args)
+        {
+            getActivity().runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if(pdf != null)
+                        try {
+                            pdf.rotar();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

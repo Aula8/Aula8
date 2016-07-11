@@ -24,7 +24,5 @@ public class DialogoPintura extends AppCompatActivity {
         returnIntent.putExtra("color",(String)view.getTag());
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
-
     }
-
 }

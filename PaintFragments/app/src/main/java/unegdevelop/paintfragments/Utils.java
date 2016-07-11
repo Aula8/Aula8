@@ -36,7 +36,7 @@ public class Utils
         }
         catch (IOException e)
         {
-            return "";
+           return "";
         }
 
     }
@@ -92,9 +92,13 @@ public class Utils
 
     public static String getA8Folder()
     {
-        return Environment.getExternalStorageDirectory() +
+        return Environment.getExternalStorageState() +
                 File.separator + folderName + File.separator;
     }
 
+    public static String getFileName(String direccionFile)
+    {
+        return direccionFile.substring(direccionFile.lastIndexOf("/")+1,direccionFile.lastIndexOf("."));
+    }
 
 }

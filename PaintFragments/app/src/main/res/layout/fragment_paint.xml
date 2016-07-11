@@ -52,6 +52,21 @@
                 android:layout_height="fill_parent"
                 android:contentDescription="Voice"
                 android:src="@drawable/microfono" />
+
+            <ImageButton
+                android:id="@+id/shape_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="Shapes"
+                android:src="@drawable/rectangle_shape"/>
+
+            <ImageButton
+                android:id="@+id/text_box_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="Text box"
+                android:src="@drawable/text_box"/>
+
         </LinearLayout>
 
         <RelativeLayout
@@ -101,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/BarraPincel"
-                    android:minWidth="150dp"
+
                     android:thumbTint="#ffffff"
                     android:progressTint="#000000" />
 
@@ -138,6 +153,12 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/rotar_pdf"
+                    android:src="@android:drawable/ic_menu_rotate"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:id="@+id/zoomdown"
                     android:src="@drawable/menos" />
 
@@ -157,7 +178,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/cargarpdf"
-                    android:src="@drawable/pdf" />
+                    android:src="@drawable/pdf"
+                    android:elevation="0dp" />
             </LinearLayout>
 
         </LinearLayout>

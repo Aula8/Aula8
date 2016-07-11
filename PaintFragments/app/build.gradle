@@ -19,16 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    sourceSets {
-        main {
-            res.srcDirs = [
-                    'src/main/res/layouts/sessions',
-                    'src/main/res/layouts/layout',
-                    'src/main/res'
-            ]
-        }
-    }
 }
 
 dependencies {
@@ -44,6 +34,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     compile 'com.android.support:design:24.0.0'
-    compile files('libs/PdfViewer.jar')
+    compile 'net.gotev:uploadservice:3.0'
 }

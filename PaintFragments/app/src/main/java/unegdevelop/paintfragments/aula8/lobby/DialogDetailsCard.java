@@ -72,6 +72,7 @@ public class DialogDetailsCard extends DialogFragment {
                 TextView tv = (TextView) view.findViewById(R.id.session_tv);
                 Toast.makeText(getActivity(), tv.getText().toString(), Toast.LENGTH_SHORT).show();
                 Servidor.enviarEvento("room", tv.getText().toString());
+                Servidor.room = tv.getText().toString();
                 Intent myIntent = new Intent( dialogView.getContext() , MainActivity.class);
                 dialogView.getContext().startActivity(myIntent);
 

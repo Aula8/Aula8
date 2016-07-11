@@ -8,16 +8,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import net.gotev.uploadservice.UploadService;
+
 import unegdevelop.paintfragments.aula8.Chat.Contenedor;
 
-public class MainActivity extends FragmentActivity implements Paint.OnFragmentInteractionListener, chat.OnFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements Paint.OnFragmentInteractionListener, chat.OnFragmentInteractionListener 
+{
 
     Paint Vent_Pizarra;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        UploadService.NAMESPACE = "com.uneg.aula8";
         try {
             AudioStream.startReceiver();
         } catch (Throwable throwable) {
@@ -47,7 +52,7 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container1, Vent_Pizarra).commit();
 
-            Contenedor Vent_Chat = new Contenedor();
+             Contenedor Vent_Chat = new Contenedor();
 
             //  Añadir el fragmento 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()

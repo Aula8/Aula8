@@ -97,7 +97,7 @@ public class Servidor
 
     public static JSONObject requestServerPost(String url, HashMap<String, String>... params) throws JSONException {
         JSONObject jsonObj;
-        request = HttpRequest.post(URL + url);
+        request = HttpRequest.post(URL +"/"+ url);
 
         if(params.length > 0)
             for (Map.Entry<String, String> param : params[0].entrySet()) {
@@ -105,7 +105,7 @@ public class Servidor
             }
 
         System.setProperty("http.keepAlive", "false");
-        String body = request.body();
+        String body = request.body().toString();
         request.disconnect();
         jsonObj = new JSONObject(body);
         return  jsonObj;
@@ -203,7 +203,9 @@ public class Servidor
                 if(i>10)
                     numero = "1"+i;
                 else
-                    numero = "10"+i;
+                    numero = ""+i;
+                    //numero = "10"+i;
+
                 prueba = "http://192.168.1." + numero + ":" + PUERTO;
                 socket = IO.socket(prueba, opts);
                 socket.connect();
@@ -270,7 +272,9 @@ public class Servidor
         socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener()
         {
             @Override
-            public void call(Object... args) {
+            public void call(Object... args) 
+            {
+            
             }
         });
 
@@ -288,7 +292,9 @@ public class Servidor
         }
     }
 
-    public static <S> S createService(Class<S> serviceClass) {
+    
+    public static <S> S createService(Class<S> serviceClass) 
+    {
         RestAdapter adapter = builder.build();
         return adapter.create(serviceClass);
     }

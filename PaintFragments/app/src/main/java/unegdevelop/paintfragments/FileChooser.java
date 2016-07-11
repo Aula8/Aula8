@@ -24,7 +24,8 @@ public class FileChooser
 
     // filter on file extension
     private String extension = null;
-    public void setExtension(String extension) {
+    public void setExtension(String extension)
+    {
         this.extension = (extension == null) ? null :
                 extension.toLowerCase();
     }
