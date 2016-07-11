@@ -28,8 +28,6 @@ require('./app/models/SubjectUser');
 require('./app/models/Question');
 
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 /**

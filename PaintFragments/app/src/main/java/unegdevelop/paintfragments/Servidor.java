@@ -105,7 +105,7 @@ public class Servidor
             }
 
         System.setProperty("http.keepAlive", "false");
-        String body = request.body().toString();
+        String body = request.body();
         request.disconnect();
         jsonObj = new JSONObject(body);
         return  jsonObj;
