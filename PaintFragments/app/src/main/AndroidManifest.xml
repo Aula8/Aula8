@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,12 +31,15 @@
         </activity>
         <activity android:name=".aula8.login.LoginActivity"
                 android:configChanges = "orientation"
-                android:screenOrientation="portrait">
+                android:screenOrientation="portrait"
+                android:label="Teclado">
         </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustNothing"
+            >
 
         </activity>
         <activity
@@ -55,6 +59,11 @@
         </activity>
 
         <activity android:name=".TextBoxEdit"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity android:name=".aula8.Chat.Chat_EditBox"
             android:theme="@style/Theme.AppCompat.Dialog"
             android:screenOrientation="landscape">
         </activity>

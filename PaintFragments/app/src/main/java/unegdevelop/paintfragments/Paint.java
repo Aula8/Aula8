@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,8 +20,10 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -178,9 +181,9 @@ public class Paint extends Fragment implements OnClickListener{
         voiceBtn.setOnClickListener(this);
         imageView = (ImageView)getView().findViewById(R.id.PDF);
         pdf = null;
+
         Servidor.anadirEventoRecibidoAlSocket("descargar pdf",onNewPDF);
-        Servidor.anadirEventoRecibidoAlSocket("pag_sig",onSigPag);
-        Servidor.anadirEventoRecibidoAlSocket("pag_prev",onPrevPag);
+        Servidor.anadirEventoRecibidoAlSocket("pagina",onPag);
         Servidor.anadirEventoRecibidoAlSocket("zoom_in",onZoomIn);
         Servidor.anadirEventoRecibidoAlSocket("zoom_out",onZoomOut);
         Servidor.anadirEventoRecibidoAlSocket("rotar", onRotate);
@@ -346,7 +349,8 @@ public class Paint extends Fragment implements OnClickListener{
             try
             {
                 pdf.nextPage();
-                Servidor.enviarEvento("pag_sig");
+                enviarPagina(pdf.getPage());
+                //Servidor.enviarEvento("pag_sig");
             } catch (Exception e)
             {
                 e.printStackTrace();
@@ -357,7 +361,8 @@ public class Paint extends Fragment implements OnClickListener{
             try
             {
                 pdf.prevPage();
-                Servidor.enviarEvento("pag_prev");
+                enviarPagina(pdf.getPage());
+
             } catch (Exception e)
             {
                 e.printStackTrace();
@@ -450,9 +455,8 @@ public class Paint extends Fragment implements OnClickListener{
                 {
                     //Aqui tiene que ir el nombre de la carpeta de la clase
                     //Cambiar PDF_ACTUAL por la carpeta donde se vaya a guardar el PDF..
-                    FilesController.uploadFile(file, "PDF_ACTUAL/",getContext(),true);
-                    //Por alguna extra;a razon no puede haber espacios en los nombres de los Archivos ...
 
+                    FilesController.uploadFile(file, "PDF_ACTUAL/",getContext(),true);
 
                 }
                 catch (JSONException e)
@@ -472,6 +476,18 @@ public class Paint extends Fragment implements OnClickListener{
 
     }
 
+    private void enviarPagina(int pagina)
+    {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("pagina",pagina);
+            Servidor.enviarEvento("pagina",obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     Emitter.Listener onNewPDF = new Emitter.Listener()
     {
         @Override
@@ -479,52 +495,58 @@ public class Paint extends Fragment implements OnClickListener{
         {
             final String dir = (String)args[0];
 
-            Activity a = getActivity();
-
-            a.runOnUiThread(new Runnable()
+            Thread t = new Thread(new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    int idDownload = -1;
                     try
                     {
-                        idDownload = FilesController.donwloadFile(dir, getActivity().getApplicationContext());
+                        FilesController.donwloadFile(dir, getActivity().getApplicationContext());
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    int p = dir.lastIndexOf("/");
-                    final String filename = Utils.getA8Folder()+ dir.substring(p);
+                        int p = dir.lastIndexOf("/");
+                        final String filename = Utils.getA8Folder() + dir.substring(p);
+                        while (!FilesController.getDownloadState());
+                        asignarPDF(filename);
 
-                    try
-                    {
-                        while(!FilesController.getDownloadState(idDownload));
-                        Thread.sleep(5);
                     }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    try
-                    {
-                        pdf = new PDFImageView(filename,imageView);
-                    }
-                    catch (Exception e)
+                    catch (IOException e)
                     {
                         e.printStackTrace();
                     }
                 }
             });
+            t.start();
 
         }
     };
 
-    Emitter.Listener onSigPag = new Emitter.Listener()
+    private void asignarPDF(final String filename)
+    {
+        getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Toast.makeText(getActivity(),"Cargando en Pantalla: "+filename
+                            , Toast.LENGTH_LONG).show();
+                    pdf = new PDFImageView(filename, imageView);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    Emitter.Listener onPag = new Emitter.Listener()
     {
         @Override
         public void call(Object... args)
         {
+            final JSONObject obj = (JSONObject) args[0];
             getActivity().runOnUiThread(new Runnable()
             {
                 @Override
@@ -532,7 +554,7 @@ public class Paint extends Fragment implements OnClickListener{
                 {
                     if(pdf != null)
                         try {
-                            pdf.nextPage();
+                            pdf.gotoPage(obj.getInt("pagina"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -541,26 +563,6 @@ public class Paint extends Fragment implements OnClickListener{
         }
     };
 
-    Emitter.Listener onPrevPag = new Emitter.Listener()
-    {
-        @Override
-        public void call(Object... args)
-        {
-            getActivity().runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    if(pdf != null)
-                        try {
-                            pdf.prevPage();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                }
-            });
-        }
-    };
 
     Emitter.Listener onZoomIn = new Emitter.Listener()
     {

@@ -83,7 +83,7 @@ public class Utils
     public static void createA8Folder()
     {
         File folder = new File(Environment.getExternalStorageDirectory() +
-                File.separator + folderName);
+                folderName);
         if (!folder.exists())
         {
             folder.mkdir();
@@ -92,13 +92,15 @@ public class Utils
 
     public static String getA8Folder()
     {
-        return Environment.getExternalStorageState() +
-                File.separator + folderName + File.separator;
+        createA8Folder();
+        //NO TOCAR .. Por favor ..
+        return Environment.getExternalStorageDirectory() +
+                folderName + File.separator;
     }
 
     public static String getFileName(String direccionFile)
     {
-        return direccionFile.substring(direccionFile.lastIndexOf("/")+1,direccionFile.lastIndexOf("."));
+        return direccionFile.substring(direccionFile.lastIndexOf("/")+1);
     }
 
 }

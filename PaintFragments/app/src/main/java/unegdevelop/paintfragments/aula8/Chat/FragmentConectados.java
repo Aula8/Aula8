@@ -23,7 +23,7 @@ public class FragmentConectados extends android.support.v4.app.Fragment
     private View rootView;
     private Activity activity;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter<Adaptador.AdaptadorViewHolder> adapter;
+    private RecyclerView.Adapter<AdaptadorConectados.AdaptadorViewHolder> adapter;
     private RecyclerView.LayoutManager lManager;
 
     @Override
@@ -51,7 +51,7 @@ public class FragmentConectados extends android.support.v4.app.Fragment
         lManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(lManager);
 
-        adapter = new Adaptador(items);
+        adapter = new AdaptadorConectados(items);
         recyclerView.setAdapter(adapter);
 
 

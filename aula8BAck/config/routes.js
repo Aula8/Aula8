@@ -46,6 +46,7 @@ module.exports = function (app, io, passport)
   app.post('/sessions/create', sessions.create);
   app.post('/create/subject', subjects.create);
   app.post('/create/subjectuser', subjectusers.create);
+  app.post('/create/question', question.create);
   app.post('/auth/login', users.login);
   app.post('/users/subjects', users.Subjects);
   
@@ -97,11 +98,16 @@ module.exports = function (app, io, passport)
     });
 
     socket.on('nuevo mensaje', function (data) {
+      question.create(data, socket);
       console.log("nuevo mensaje de ", socket.username, data, "en la sala ", socket.room);
-      socket.in(socket.room).to(socket.room).emit('nuevo mensaje', {
+      /*socket.in(socket.room).emit('nuevo mensaje', {
         nombre_Usuario: socket.username,
         mensaje: data
       });
+      socket.emit('nuevo mensaje', {
+        nombre_Usuario: socket.username,
+        mensaje: data
+      });*/
     });
 
 
@@ -112,14 +118,15 @@ module.exports = function (app, io, passport)
       socket.username = nombre_Usuario;
       ++numUsuarios;
       usuarioAñadido = true;
-      socket.emit('iniciar sesion', {
+      
+      /*socket.emit('iniciar sesion', {
         numUsuarios: numUsuarios
       });
 
       socket.in(socket.room).to(socket.room).emit('usuario unido', {
         nombre_Usuario: socket.username,
         numUsuarios: numUsuarios
-      });
+      });*/
 
       console.log('Alguien se conectó con Aula 8', socket.request.connection._peername);
     });
@@ -127,7 +134,8 @@ module.exports = function (app, io, passport)
 
     socket.on('escribiendo', function ()
     {
-      socket.in(socket.room).to(socket.room).emit('escribiendo', {
+      console.log("Usuario Escribiendo");
+      socket.in(socket.room).emit('escribiendo', {
         nombre_Usuario: socket.username
       });
     });
@@ -140,7 +148,7 @@ module.exports = function (app, io, passport)
     });
 
     socket.on('enviar imagen', function (data) {
-      socket.in(socket.room).to(socket.room).emit('enviar imagen', {
+      socket.in(socket.room).emit('enviar imagen', {
         nombre_Usuario: socket.username,
         img_Codificada: data
       });
@@ -193,24 +201,10 @@ module.exports = function (app, io, passport)
           });
     });
 
-
-
-    socket.on("descargar pdf", function (data) 
+    socket.on("pagina", function (data) 
     {
-        socket.in(socket.room).emit("descargar pdf",data);
-        console.log("Replicando PDF");        
-    });
-
-    socket.on("pag_sig", function () 
-    {
-        socket.in(socket.room).emit("pag_sig");
-        console.log("Pagina Siguiente");
-    });
-    
-    socket.on("pag_prev", function () 
-    {
-        socket.in(socket.room).emit("pag_prev");
-        console.log("Pagina Anterior");
+        socket.in(socket.room).emit("pagina",data);
+        console.log("Cambiando de Pagina");
     });
     
     socket.on("zoom_in", function () 

@@ -23,35 +23,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/start_new"
-                android:src="@drawable/news" />
+                android:src="@drawable/news"
+                />
 
             <ImageButton
                 android:id="@+id/draw_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/brush"
-                android:src="@drawable/brush" />
+                android:src="@drawable/brush"
+                />
 
             <ImageButton
                 android:id="@+id/line_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/brush"
-                android:src="@drawable/linea" />
+                android:src="@drawable/linea"
+                />
 
             <ImageButton
                 android:id="@+id/erase_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/erase"
-                android:src="@drawable/eraser" />
+                android:src="@drawable/eraser"
+               />
 
             <ImageButton
                 android:id="@+id/voice_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:contentDescription="Voice"
-                android:src="@drawable/microfono" />
+                android:src="@drawable/microfono"
+                />
 
             <ImageButton
                 android:id="@+id/shape_btn"
@@ -142,31 +147,35 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/colores"
-                    android:src="@drawable/paleta" />
+                    android:src="@drawable/paleta"
+                    />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/zoomup"
-                    android:src="@drawable/mas" />
+                    android:src="@drawable/mas"
+                    />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/rotar_pdf"
-                    android:src="@android:drawable/ic_menu_rotate"/>
+                    android:src="@android:drawable/ic_menu_rotate" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/zoomdown"
-                    android:src="@drawable/menos" />
+                    android:src="@drawable/menos"
+                    />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/prev"
-                    android:src="@drawable/flechaizq" />
+                    android:src="@drawable/flechaizq"
+                   />
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -179,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/cargarpdf"
                     android:src="@drawable/pdf"
-                    android:elevation="0dp" />
+                     />
             </LinearLayout>
 
         </LinearLayout>

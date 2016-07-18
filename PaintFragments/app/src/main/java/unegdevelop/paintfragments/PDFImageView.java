@@ -203,7 +203,7 @@ public class PDFImageView
 
     public void gotoPage(int page) throws Exception
     {
-        if (pdfDecoder != null && page > 1 && page < pdfDecoder.getPageCount()-1)
+        if (pdfDecoder != null && page >= 0 && page < pdfDecoder.getPageCount()-1)
         {
             mPage = page;
             showPage();

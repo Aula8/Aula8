@@ -204,7 +204,6 @@ public class Servidor
                     numero = "1"+i;
                 else
                     numero = ""+i;
-                    //numero = "10"+i;
 
                 prueba = "http://192.168.1." + numero + ":" + PUERTO;
                 socket = IO.socket(prueba, opts);

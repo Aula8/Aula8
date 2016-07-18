@@ -1,21 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".aula8.Chat.FragmentChat">
+    android:weightSum="1">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/messages"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/preguntas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2225.28"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:padding="3dp"
         android:scrollbars="vertical"
-        android:scrollbarStyle="outsideOverlay"/>
+        android:layout_weight="1.01" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,12 +21,14 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:orientation="horizontal"
         android:gravity="center_vertical">
-        <!-- <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_button"
+
+        <ImageButton
+            android:id="@+id/attach_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="#673ab7"
-            android:contentDescription="@string/action_add"/> -->
+            android:src="@drawable/ic_action_attachment"
+            android:contentDescription="@string/action_attach"/>
+
         <EditText
             android:id="@+id/message_input"
             android:layout_width="0dp"
@@ -37,16 +37,18 @@
             android:hint="@string/prompt_message"
             android:imeActionId="@+id/send"
             android:imeActionLabel="@string/action_send"
-            android:imeOptions="actionSend"
+            android:imeOptions="actionSend|actionPrevious|flagNavigateNext"
             android:inputType="textMultiLine"
             android:singleLine="false"
             android:maxLength="230"
             android:isScrollContainer="true"/>
-        <android.support.design.widget.FloatingActionButton
+        <ImageButton
             android:id="@+id/send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="#1e88e5"
+            android:src="@android:drawable/ic_menu_send"
             android:contentDescription="@string/action_send"/>
+
     </LinearLayout>
+
 </LinearLayout>

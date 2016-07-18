@@ -6,18 +6,11 @@ import android.os.Environment;
 import android.util.Log;
 
 
-import com.golshadi.majid.core.DownloadManagerPro;
-import com.golshadi.majid.core.enums.TaskStates;
-import com.golshadi.majid.database.elements.Task;
+
 
 import net.gotev.uploadservice.BinaryUploadRequest;
-import net.gotev.uploadservice.ServerResponse;
-import net.gotev.uploadservice.UploadInfo;
+
 import net.gotev.uploadservice.UploadNotificationConfig;
-import net.gotev.uploadservice.UploadRequest;
-import net.gotev.uploadservice.UploadService;
-import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
-import net.gotev.uploadservice.UploadTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,9 +23,6 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
-import io.socket.emitter.Emitter;
-import okhttp3.internal.Util;
-
 
 /**
  * Created by Slaush on 16/06/2016.
@@ -41,7 +31,7 @@ import okhttp3.internal.Util;
 public class FilesController
 {
 
-    private static DownloadManagerPro downloader;
+    private static boolean downloadState;
 
     static public  void uploadFile(File file, String direccionFile, Context context, boolean replicar)
             throws JSONException, FileNotFoundException, MalformedURLException
@@ -54,33 +44,30 @@ public class FilesController
             bUPR.addHeader("room",Servidor.room);
         }
 
-        bUPR.addHeader("file-name", file.getName().trim()).addHeader("file-folder",direccionFile)
+        bUPR.addHeader("file-name", file.getName().replaceAll("\\s","")).addHeader("file-folder",direccionFile)
                 .setFileToUpload(file.getAbsolutePath())
                 .setNotificationConfig(getNotificationConfig(file.getName()))
                 .setMaxRetries(2)
                 .startUpload();
     }
 
-    static int  donwloadFile(String direccionFile, Context context) throws IOException
+    static void donwloadFile(String direccionFile, Context context) throws IOException
     {
-        downloader = new DownloadManagerPro(context);
-        // 16 -- cantidad de Chunks maximo ..
-        downloader.init(Utils.getA8Folder(),16,null);
-        System.out.println(Servidor.getURLServidor()+"/"+direccionFile);
-
-        System.out.println(direccionFile.substring(direccionFile.lastIndexOf("/")+1));
-
-        int token = downloader.addTask(Utils.getFileName(direccionFile),
-                                       Servidor.getURLServidor()+"/"+direccionFile, 16,
-                                       Utils.getA8Folder(), true,false);
-        downloader.startDownload(token);
-        return token;
-
+        String url = Servidor.getURLServidor()+"/"+direccionFile;
+        String dir = Utils.getA8Folder()+Utils.getFileName(direccionFile);
+        downloadState = false;
+        System.out.println("URL:"+url);
+        new DownloadManager(context).execute(url, dir);
     }
 
-    static boolean getDownloadState(int token) throws JSONException
+    static boolean getDownloadState()
     {
-        return downloader.singleDownloadStatus(token).toJsonObject().getInt("state") == TaskStates.DOWNLOAD_FINISHED;
+        return downloadState;
+    }
+
+    static void setDownloadState(boolean dState)
+    {
+        downloadState = dState;
     }
 
     private static UploadNotificationConfig getNotificationConfig(String title)
@@ -93,7 +80,8 @@ public class FilesController
                 .setCompletedMessage("Se Subio:"+title)
                 .setErrorMessage("Hubo un Error")
                 .setAutoClearOnSuccess(false)
-                .setClearOnAction(true);
+                .setClearOnAction(true)
+                .setRingToneEnabled(false);
     }
 
 

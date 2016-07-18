@@ -55,7 +55,7 @@ public class AsyncWorker extends Thread{
             
 
             File cf = new File(FileUtils.address(task.save_address, String.valueOf(chunk.id)));
-            // Check response code first to avoid error stream
+            // Check respuesta code first to avoid error stream
             int status = connection.getResponseCode();
            	InputStream remoteFileIn;
               if(status == 416)

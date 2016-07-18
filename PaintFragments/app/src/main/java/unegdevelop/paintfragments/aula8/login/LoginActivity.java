@@ -341,9 +341,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
             if (success) {
                 //finish();
-                Intent myIntent = new Intent(mContext, MainActivityLobby.class);
-                //Servidor.setRequestHeaders(jsonObj.get("token").toString());
                 Servidor.setDataUser(jsonObj);
+                Intent myIntent = new Intent(mContext, MainActivityLobby.class);
+                try {
+                    Servidor.socket.emit("agregar usuario", Servidor.jsonObjUser.getString("name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //Servidor.setRequestHeaders(jsonObj.get("token").toString());
                 startActivity(myIntent);
             } else {
                 mPasswordView.setError((String) message);

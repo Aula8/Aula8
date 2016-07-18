@@ -6,6 +6,7 @@ var service = require('./services');
 const mongoose = require('mongoose');
 const { wrap: async } = require('co');
 const Question = mongoose.model('Question');
+const User = mongoose.model('User');
 /*
 	Find Question
 */
@@ -35,24 +36,42 @@ exports.findQuestionByID = function (req, res) {
 /*
 	Insert Question in the db
 */
-exports.create = async(function* (req, res){
-	const Question = new Question(req.body);
-	Question.save(function(err, question){
-		if(!err){
-			console.log("Question created");
-			return res.send({ status: 'OK', section:question});
-		}else{
-			console.log(err);
-			if(err.name == 'ValidationError'){
-					res.statusCode=400;
-					res.send({error:'ValidationError'});
-				}else{
-				res.statusCode=500;
-				res.send({error: 'Server error'});
-				}
-				console.log('Internal error(%d): %s',res.statusCode,err.message);
-		}
-	})
+exports.create = function (req, socket){
+	console.log(req, socket.username);
+	User.findOne({name: socket.username}, function(err, user){
+		console.log(user);
+		const Q = new Question({
+			user_question: user._id,
+			question: req,
+		});
+		Q.save(function(err, question){
+			if(!err){
+				console.log("Question created");
+				//return res.send({ status: 'OK', question: question});
+				socket.in(socket.room).emit('nuevo mensaje', {
+			        nombre_Usuario: socket.username,
+			        mensaje: req,
+			        id_question: question._id
+			    });
+			    socket.emit('nuevo mensaje', {
+			        nombre_Usuario: socket.username,
+			        mensaje: req,
+			        id_question: question._id
+			    });
+			}
+		});
+	});
+};
+
+
+exports.update = async(function* (req, res){
+	Question.update({id: req.params.id}, {$push: {responses: [req.params.response]}}, function(err){
+		if(err){
+                console.log(err);
+        }else{
+                console.log("Successfully added");
+        }
+	});	
 });
 
 //Created by: Ricardo Vasquez 26073680

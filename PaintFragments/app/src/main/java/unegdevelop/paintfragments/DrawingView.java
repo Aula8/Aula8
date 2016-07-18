@@ -738,6 +738,7 @@ public class DrawingView extends View
                 {
                     setPropiedades(obj);
                     setDrawText(obj);
+                    prepareForText();
                     drawCanvas.drawText(currentText, textX, textY, drawPaint);
                     doneWithText();
                 }
@@ -750,7 +751,8 @@ public class DrawingView extends View
         
     }
 
-    private void setDrawText(JSONObject obj) throws JSONException {
+    private void setDrawText(JSONObject obj) throws JSONException
+    {
         setCurrentText(obj.getString("text"));
         textX = reglaDeTres(obj.getInt("width"),drawCanvas.getWidth(), (float) obj.getDouble("tx"));
         textY = reglaDeTres(obj.getInt("height"),drawCanvas.getHeight(), (float) obj.getDouble("ty"));

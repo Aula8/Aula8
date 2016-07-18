@@ -12,8 +12,8 @@ const QuestionSchema = new Schema({
   user_question: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   user_responses: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
   question: { type: String, default: '' },
-  responses: [{ type: String, default: '' }],
-  status: { type: Boolean },
+  responses: { type: Array, default: [] }, // [['response'], ['response'], ['response']]
+  status: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('Question', QuestionSchema);
