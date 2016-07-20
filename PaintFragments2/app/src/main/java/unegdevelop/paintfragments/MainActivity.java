@@ -1,9 +1,14 @@
 package unegdevelop.paintfragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import net.gotev.uploadservice.UploadService;
 
@@ -12,6 +17,7 @@ import unegdevelop.paintfragments.aula8.Chat.Contenedor;
 public class MainActivity extends FragmentActivity implements Paint.OnFragmentInteractionListener, Chat.OnFragmentInteractionListener
 {
     private Paint vPizarra;
+    private boolean keyCod = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,5 +59,23 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
     }
 
     public void paintClicked(View view){
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Salir De La Sesión")
+                .setMessage("Está seguro que desea salir? \nLa Sesión se cerrará y se les notificará a los usuarios conectados.")
+                .setPositiveButton("Salir", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("Permanecer", null)
+                .show();
     }
 }

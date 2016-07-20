@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 
+import io.socket.emitter.Emitter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -47,12 +48,16 @@ public class DialogDetailsCard extends DialogFragment
     public  View myV;
     public  List<Sessions> session;
 
+    final private String GET_FILES_SUBJECT = "getFilesSubject";
+
     AdaptadorSala.ViewHolderSala holder;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
         final AlertDialog.Builder sub = new AlertDialog.Builder(getActivity());
+
+        Servidor.anadirEventoRecibidoAlSocket(GET_FILES_SUBJECT, filesSubject);
 
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context
                 .LAYOUT_INFLATER_SERVICE);
@@ -102,10 +107,36 @@ public class DialogDetailsCard extends DialogFragment
             }
         });
 
+        FloatingActionButton dowload = (FloatingActionButton) dialogView
+                .findViewById(R.id.dowloadFiles);
+        dowload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("subject", holder.materia.getText().toString());
+                    data.put("section", holder.seccion.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Servidor.enviarEvento(GET_FILES_SUBJECT, data);
+            }
+        });
+
         if (!Servidor.haveAccess())
             fab.setVisibility(View.GONE);
 
         return sub.create();
     }
+
+
+    public Emitter.Listener filesSubject = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            final JSONObject data = (JSONObject) args[0];
+            System.out.println("[---->>] " + data);
+            //Toast.makeText(dialogView.getContext(), "Nombre Archivos", Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }

@@ -218,18 +218,8 @@ module.exports = function (app, io, passport)
     socket.on("getFilesSubject", function(data){
       console.log( path.resolve("FILES/" + data.subject + "/" + data.section) );
       console.log(walk("FILES/" + data.subject + "/" + data.section));
-      /*var path = path.resolve("FILES/" + data.subject + "/" + data.section);
-      fs.readdir(__filename + "/FILES/" + data.subject + "/" + data.section, function(err, items) {
-          for (var i=0; i<items.length; i++) {
-              var file = path + '/' + items[i];
-       
-              console.log("Start: " + file);
-              //fs.stat(file, generate_callback(file));
-          }
-          if(err){
-            console.log(err);
-          }
-      });*/
+      var result = walk("FILES/" + data.subject + "/" + data.section)
+      socket.emit("getFilesSubject", {success: result});
     });
 
 
@@ -248,7 +238,7 @@ var walk = function(dir) {
       })
       return results;
     } catch (e) {
-      return "No se encontraron archivos";
+      return {results: "No se encontraron archivos"};
     }
 }
 

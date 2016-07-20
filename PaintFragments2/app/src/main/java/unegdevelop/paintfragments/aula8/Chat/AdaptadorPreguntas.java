@@ -121,20 +121,6 @@ public class AdaptadorPreguntas extends RecyclerView.Adapter<AdaptadorPreguntas.
                     break;
                 }
             }
-
-           /* for(Usuario user: items){
-                if( user.getIDPregunta().compareTo(idPregunta) == 0 ){
-                    user.setPreguntas(new Respuesta(mensaje));
-                    break;
-                    //adapter = new AdaptadorRespuesta(user.getPreguntas());
-                    //adapter.notifyItemChanged(user.getPreguntas().size() -1 );
-                    recyclerView = (RecyclerView) dialog.findViewById(R.id.respuestasCard);
-                    recyclerView.setHasFixedSize(true);
-                    lManager = new LinearLayoutManager(dialog.getContext());
-                    recyclerView.setLayoutManager(lManager);
-                    recyclerView.setAdapter(adapter);
-                }
-            }*/
         }
     };
 

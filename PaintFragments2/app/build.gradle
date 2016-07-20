@@ -37,4 +37,6 @@ dependencies {
     compile 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     compile 'com.android.support:design:24.0.0'
     compile 'net.gotev:uploadservice:3.0'
+    //compile ('com.afollestad.material-dialogs:core:0.8.6.2'){transitive = true}
+    //compile ('com.afollestad.material-dialogs:commons:0.8.6.2'){transitive = true}
 }
