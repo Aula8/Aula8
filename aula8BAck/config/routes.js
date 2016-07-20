@@ -185,27 +185,6 @@ module.exports = function (app, io, passport)
       }
     });
 
-    socket.on('getSessions', function (data) {
-          Subject.findOne({name: data}, function(error, subject){
-              Session.findOne({subject: subject.id}, function(err, session){
-                  if(!session)
-                  {
-                    res.statusCode = 404;
-                    socket.emit("setSessions", {error: 'Not found'});
-                  }
-                  if(session){
-                    console.log("Session Enviada");
-                    socket.emit("setSessions", {session: session});
-                  }else
-                  {
-                    res.statusCode = 500
-                    console.log('Internal error(%d): %s',res.statusCode,err.message);
-                    socket.emit("setSessions", {error: 'Server error'});
-                  }
-              }); 
-          });
-    });
-
     socket.on("pagina", function (data) 
     {
         socket.in(socket.room).emit("pagina",data);
@@ -236,9 +215,42 @@ module.exports = function (app, io, passport)
         base64_decode(data.data,data.nombre,data.direccion);
     });
 
+    socket.on("getFilesSubject", function(data){
+      console.log( path.resolve("FILES/" + data.subject + "/" + data.section) );
+      console.log(walk("FILES/" + data.subject + "/" + data.section));
+      /*var path = path.resolve("FILES/" + data.subject + "/" + data.section);
+      fs.readdir(__filename + "/FILES/" + data.subject + "/" + data.section, function(err, items) {
+          for (var i=0; i<items.length; i++) {
+              var file = path + '/' + items[i];
+       
+              console.log("Start: " + file);
+              //fs.stat(file, generate_callback(file));
+          }
+          if(err){
+            console.log(err);
+          }
+      });*/
+    });
+
 
 
   });
+
+var walk = function(dir) {
+    var results = []
+    try{
+      var list = fs.readdirSync(dir);
+      list.forEach(function(file) {
+          file = dir + '/' + file
+          var stat = fs.statSync(file)
+          if (stat && stat.isDirectory()) results = results.concat(walk(file))
+          else results.push(file)
+      })
+      return results;
+    } catch (e) {
+      return "No se encontraron archivos";
+    }
+}
 
 function base64_decode(file,name,direccion) 
 {
