@@ -110,6 +110,11 @@ module.exports = function (app, io, passport)
       });*/
     });
 
+    socket.on('nueva respuesta', function (data) {
+      console.log("Nueva respuesta.. ", data);
+      question.update(socket, data);
+    });
+
 
     socket.on('agregar usuario', function (nombre_Usuario) {
       if (usuarioAñadido) return;
@@ -157,7 +162,7 @@ module.exports = function (app, io, passport)
     socket.on("pintar", function(data)
     {
         socket.in(socket.room).emit("pintar",data);
-        console.log(data);
+        console.log("pintando en la sala : ", socket.room);
     });
 
     socket.on("borrar todo", function()

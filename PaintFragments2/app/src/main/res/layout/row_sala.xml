@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="450dp"
+    android:layout_height="450dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tarjeta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="10dp"
+        android:elevation="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        app:cardPreventCornerOverlap="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/Lmateria">
+            <TextView
+                android:id="@+id/materia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="#2E2EFE"
+                android:text="Materia"
+                android:shadowRadius="1.5"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:textSize="20dp"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layoutTarjeta"
+            android:layout_width="400dp"
+            android:layout_height="300dp"
+            android:background="#ff2196f3"
+            android:layout_alignTop="@+id/Lmateria"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/tarjeta"
+            android:layout_marginTop="61dp">
+
+            <TextView
+                android:id="@+id/tema"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tema"
+                android:textSize="18dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp" />
+
+            <TextView
+                android:id="@+id/seccionTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sección"
+                android:textStyle="italic"
+                android:textSize="15dp"
+                android:layout_below="@+id/tema"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="false"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="20dp" />
+
+            <TextView
+                android:id="@+id/seccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:layout_alignTop="@+id/seccionTxt"
+                android:layout_toEndOf="@+id/seccionTxt"
+                android:layout_marginStart="4dp"
+                android:layout_marginRight="20dp"/>
+
+            <TextView
+                android:id="@+id/owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Owner"
+                android:textSize="15dp"
+                android:layout_below="@+id/seccionTxt"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_alignEnd="@+id/usuariosConectados" />
+
+            <TextView
+                android:id="@+id/conectadosTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Conectados:"
+                android:textSize="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/owner"
+                android:layout_alignParentStart="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp" />
+
+            <TextView
+                android:id="@+id/usuariosConectados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="32"
+                android:textStyle="bold"
+                android:textColor="#00FF00"
+                android:layout_marginStart="10dp"
+                android:textSize="20dp"
+                android:layout_alignBottom="@+id/conectadosTxt"
+                android:layout_toEndOf="@+id/conectadosTxt" />
+
+            <TextView
+                android:id="@+id/slashTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:layout_alignTop="@+id/usuariosConectados"
+                android:layout_toEndOf="@+id/usuariosConectados"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="20dp"
+                android:textSize="20dp"
+                />
+
+            <TextView
+                android:id="@+id/usuariosMaximos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:textStyle="bold"
+                android:layout_alignTop="@+id/slashTxt"
+                android:layout_toEndOf="@+id/slashTxt"
+                android:layout_marginStart="8dp"
+                android:layout_marginRight="20dp"
+                android:textSize="20dp"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFF"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Entrar"
+                    android:id="@+id/botonEntrar"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toStartOf="@+id/usuariosMaximos"
+                    android:layout_gravity="center_horizontal|bottom" />
+            </FrameLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

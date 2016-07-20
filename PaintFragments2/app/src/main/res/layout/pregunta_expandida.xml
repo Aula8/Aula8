@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollRespuestas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/imagenUsuario"
+                    android:layout_marginTop="10dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nombreUsuario"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#000"
+                    android:layout_alignLeft="@+id/imagenUsuario"
+                    android:layout_centerVertical="true"
+                    android:textSize="30sp"
+                    android:text="Nombre y apellido"
+                    android:textAlignment="center"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/preguntaUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_alignBottom="@+id/imagenUsuario"
+                />
+            <android.support.v7.widget.RecyclerView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/respuestasCard"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="3dp"
+                android:scrollbars="vertical"
+                android:layout_weight="1.01"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/editBox"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone|actionPrevious|flagNavigateNext"
+            android:inputType="textMultiLine|textAutoCorrect"
+            android:minLines="2"
+            android:gravity="top|left"
+            android:maxLines="5"
+            android:lines="5"
+            android:scrollbars="vertical"
+            android:hint="Recuerde ser siempre respetuoso"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cerrar"
+            android:id="@+id/botonCerrar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/scrollRespuestas" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Responder"
+            android:id="@+id/btnResponder"
+            android:layout_alignParentRight="true" />
+
+        <ImageButton
+            android:id="@+id/send_button"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_send"
+            android:contentDescription="@string/action_send"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

@@ -46,6 +46,8 @@ var sections = [
 var subjectusers = [
 	{user: "wuilkysb", subject: "Ingeniería del Software 1", number: "1"},
 	{user: "wuilkysb", subject: "Tecnicas de Programación 2", number: "1"},
+	{user: "jrondon", subject: "Ingeniería del Software 1", number: "1"},
+	{user: "jbello", subject: "Tecnicas de Programación 2", number: "1"},
 ]
 
 /*
@@ -113,7 +115,7 @@ test('Create - Sections', t => {
 
 
 //---> Descomenta luego de haber corrido todo lo anterior (comentas todo lo anterior)
-test('Create - Sessions', t => {
+/*test('Create - Sessions', t => {
 	for (var i =0; i < sessions.length; i++){	
 		request(app)
 		.post('/create/session')
@@ -123,10 +125,10 @@ test('Create - Sessions', t => {
 		.expect(200)
 		.end(t.end());
 	}	
-});
+});*/
 
 
-/*
+
 //---> Descomenta luego de haber corrido todo lo anterior (comentas todo lo anterior)
 test('Create - SubjectUser', t => {
 	for (var i =0; i < subjectusers.length; i++){	
@@ -139,4 +141,3 @@ test('Create - SubjectUser', t => {
 		.end(t.end());
 	}	
 });
-*/

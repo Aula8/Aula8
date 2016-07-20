@@ -1,0 +1,202 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="unegdevelop.paintfragments.Paint">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#32536dfe"
+        android:orientation="vertical"
+        tools:context=".Paint" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/new_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/start_new"
+                android:src="@drawable/news"
+                />
+
+            <ImageButton
+                android:id="@+id/draw_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="@string/brush"
+                android:src="@drawable/brush"
+                />
+
+            <ImageButton
+                android:id="@+id/line_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="@string/brush"
+                android:src="@drawable/linea"
+                />
+
+            <ImageButton
+                android:id="@+id/erase_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="@string/erase"
+                android:src="@drawable/eraser"
+               />
+
+            <ImageButton
+                android:id="@+id/voice_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="Voice"
+                android:src="@drawable/microfono"
+                />
+
+            <ImageButton
+                android:id="@+id/shape_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="Shapes"
+                android:src="@drawable/shapes"/>
+
+            <ImageButton
+                android:id="@+id/text_box_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:contentDescription="Text box"
+                android:src="@drawable/text_box"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:id="@+id/PDF"
+                android:background="#ffffff"
+                android:cropToPadding="false" />
+
+            <unegdevelop.paintfragments.DrawingView
+                android:id="@+id/drawing"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="3dp"
+                android:background="#00ffffff"
+                android:contextClickable="false" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <SeekBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/BarraPincel"
+
+                    android:thumbTint="#ffffff"
+                    android:progressTint="#000000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="25.0 px"
+                    android:id="@+id/TamañoPincel"
+                    android:layout_gravity="center" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/colores"
+                    android:src="@drawable/paleta"
+                    />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/zoomup"
+                    android:src="@drawable/mas"
+                    />
+
+
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/zoomdown"
+                    android:src="@drawable/menos"
+                    />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rotar_pdf"
+                    android:src="@drawable/rotar" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prev"
+                    android:src="@drawable/flechaizq"
+                   />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/prox"
+                    android:src="@drawable/flechader" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cargarpdf"
+                    android:src="@drawable/pdf"
+                     />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

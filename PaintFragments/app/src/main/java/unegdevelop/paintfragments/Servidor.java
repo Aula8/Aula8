@@ -84,6 +84,7 @@ public class Servidor
     public static JSONArray jsonObjSessions;
     public static JSONArray jsonObjSections;
     public static JSONArray jsonObjSubjectsProfessors;
+    public static HashMap<String, JSONObject> HQuestions;
 
     private static RestAdapter.Builder builder = null;
 
@@ -154,6 +155,10 @@ public class Servidor
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setHQuestions(String q_id, JSONObject data){
+        HQuestions.put(q_id, data);
     }
 
     public static void  setDataSessionSubject(JSONObject j) throws JSONException {

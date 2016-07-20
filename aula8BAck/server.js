@@ -78,6 +78,38 @@ app.post('/upload', function(req, res)
         } 
     });
 });
+
+app.post('/uploadMaterial', function(req, res) 
+{
+    console.log("\n\nBinary Upload Request from: " + req.ip);
+
+    var filename = req.headers["file-name"];
+    var subject  = req.headers["subject"],
+        section  = req.headers["section"],
+        session  = req.headers["session"],
+        folder   = req.headers["file-folder"];
+    var dirPath  = folder + "/" + subject + "/" + section + "/" + session;
+    console.log("Started binary upload of: " + filename);
+        
+    mkdirp(dirPath, function (err) 
+    {
+        if (err) 
+        {
+            console.log("Error ..");
+        }    
+        else 
+        {   
+            var filepath = path.resolve(dirPath, filename);
+            var out = fs.createWriteStream(filepath, { flags: 'w', encoding: 'binary', fd: null, mode: '644' });
+            req.pipe(out);
+            req.on('end', function() 
+            {
+                console.log("Finished binary upload of: " + filename + "\n  in: " + filepath);
+                res.sendStatus(200);
+            });
+        } 
+    });
+});
 require('./config/express')(app);
 require('./config/routes')(app, io);
 

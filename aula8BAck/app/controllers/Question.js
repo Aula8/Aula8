@@ -39,14 +39,12 @@ exports.findQuestionByID = function (req, res) {
 exports.create = function (req, socket){
 	console.log(req, socket.username);
 	User.findOne({name: socket.username}, function(err, user){
-		console.log(user);
 		const Q = new Question({
 			user_question: user._id,
 			question: req,
 		});
 		Q.save(function(err, question){
 			if(!err){
-				console.log("Question created");
 				//return res.send({ status: 'OK', question: question});
 				socket.in(socket.room).emit('nuevo mensaje', {
 			        nombre_Usuario: socket.username,
@@ -64,14 +62,15 @@ exports.create = function (req, socket){
 };
 
 
-exports.update = async(function* (req, res){
-	Question.update({id: req.params.id}, {$push: {responses: [req.params.response]}}, function(err){
-		if(err){
-                console.log(err);
-        }else{
+exports.update = function (socket, data){
+	Question.update({id: data.id}, {$push: {responses: [data.response]}}, function(err){
                 console.log("Successfully added");
-        }
+                socket.in(socket.room).emit('nueva respuesta',{
+                	response: data.response,
+                	user_response: data.user_response,
+                	id_question: data.id
+                });
 	});	
-});
+};
 
 //Created by: Ricardo Vasquez 26073680

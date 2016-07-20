@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/preguntas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="3dp"
+        android:scrollbars="vertical"
+        android:layout_weight="1.01" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/attach_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_attachment"
+            android:contentDescription="@string/action_attach"/>
+
+       <!-- <EditText
+            android:id="@+id/message_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/prompt_message"
+            android:imeActionId="@+id/send"
+            android:imeActionLabel="@string/action_send"
+            android:imeOptions="actionSend|actionPrevious|flagNavigateNext"
+            android:inputType="textMultiLine"
+            android:singleLine="false"
+            android:maxLength="230"
+            android:isScrollContainer="true"/> -->
+        <ImageButton
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_send"
+            android:contentDescription="@string/action_send"/>
+
+    </LinearLayout>
+
+</LinearLayout>

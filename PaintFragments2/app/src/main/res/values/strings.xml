@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Aula 8</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="start_new">New</string>
+    <string name="brush">Brush</string>
+    <string name="erase">Erase</string>
+    <string name="save">Save</string>
+    <string name="paint">Paint</string>
+
+    <string name="sml">Small</string>
+    <string name="med">Medium</string>
+    <string name="lrg">Large</string>
+
+    <string name="prompt_email">User</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="pes1String">Fragment 1</string>
+    <string name="pes2String">Fragment 1</string>
+
+    <string name="prompt_username">Tu nombre</string>
+    <string name="message_welcome">Bienvenido a Aula 8</string>
+    <plurals name="message_participants">
+        <item quantity="one">hay %d participante</item>
+        <item quantity="other">hay %d participantes</item>
+    </plurals>
+    <string name="action_send">Enviar</string>
+    <string name="action_attach">Adjuntar</string>
+    <string name="action_add">Agregar</string>
+    <string name="action_mic">Grabacion</string>
+
+    <string name="prompt_message">Mensaje</string>
+    <string name="action_leave">Salir</string>
+    <string name="action_seleccionar">Seleccionar</string>
+    <string name="error_connect">Conexión fallida</string>
+
+    <string name="message_user_joined">%s se ha unido</string>
+    <string name="message_user_left">%s se ha ido</string>
+    <string name="user_action_typing">está escribiendo</string>
+    <string name="asignaturas">Asignaturas</string>
+</resources>
