@@ -39,9 +39,9 @@ public class Fragmento extends Fragment
         View rootView = (View) inflater.inflate(R.layout.fragmento, container, false);
 
         reciclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        reciclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
-                                                              LinearLayoutManager.HORIZONTAL,
-                                                              false));
+        reciclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false));
 
         datos = new ArrayList<Sala>(); //crea una lista de objetos de tipo Sala para adaptarla al fragmento
         try 

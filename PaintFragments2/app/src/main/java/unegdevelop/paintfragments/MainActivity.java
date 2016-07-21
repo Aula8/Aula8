@@ -12,6 +12,11 @@ import android.widget.Toast;
 
 import net.gotev.uploadservice.UploadService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.Socket;
+
 import unegdevelop.paintfragments.aula8.Chat.Contenedor;
 
 public class MainActivity extends FragmentActivity implements Paint.OnFragmentInteractionListener, Chat.OnFragmentInteractionListener
@@ -63,19 +68,30 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Salir De La Sesión")
-                .setMessage("Está seguro que desea salir? \nLa Sesión se cerrará y se les notificará a los usuarios conectados.")
-                .setPositiveButton("Salir", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
+        if(Servidor.haveAccess()) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Salir De La Sesión")
+                    .setMessage("Está seguro que desea salir? \nLa Sesión se cerrará y se les notificará a los usuarios conectados.")
+                    .setPositiveButton("Salir", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            JSONObject data = new JSONObject();
+                            try {
+                                data.put("session", Servidor.getActualSection());
+                                data.put("subject", Servidor.getActualSubject());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Servidor.socket.emit("closeSession", data);
+                            finish();
+                        }
 
-                })
-                .setNegativeButton("Permanecer", null)
-                .show();
+                    })
+                    .setNegativeButton("Permanecer", null)
+                    .show();
+        }else{
+            finish();
+        }
     }
 }

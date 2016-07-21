@@ -66,7 +66,7 @@ public class FilesController
                 .startUpload();
     }
 
-    static void donwloadFile(String direccionFile, Context context) throws IOException
+    static public void donwloadFile(String direccionFile, Context context) throws IOException
     {
         String url = Servidor.getURLServidor()+"/"+direccionFile;
         String dir = Utils.getA8Folder()+Utils.getFileName(direccionFile);
@@ -75,7 +75,7 @@ public class FilesController
         new DownloadManager(context).execute(url, dir);
     }
 
-    static boolean getDownloadState()
+    static public boolean getDownloadState()
     {
         return downloadState;
     }

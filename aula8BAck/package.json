@@ -53,6 +53,7 @@
     "mongoose": "~4.4.15",
     "morgan": "~1.7.0",
     "multer": "~1.1.0",
+    "node-dir": "^0.1.15",
     "notifier": "~0.1.7",
     "only": "0.0.2",
     "passport": "~0.3.2",

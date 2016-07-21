@@ -46,22 +46,22 @@
         </activity>
 
         <activity android:name=".DialogoPintura"
-            android:theme="@style/Theme.AppCompat.Dialog"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog"
             android:screenOrientation="landscape">
         </activity>
 
         <activity android:name=".ShapeChooser"
-            android:theme="@style/Theme.AppCompat.Dialog"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog"
             android:screenOrientation="landscape">
         </activity>
 
         <activity android:name=".TextBoxEdit"
-            android:theme="@style/Theme.AppCompat.Dialog"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog"
             android:screenOrientation="landscape">
         </activity>
 
         <activity android:name=".aula8.Chat.Chat_EditBox"
-            android:theme="@style/Theme.AppCompat.Dialog"
+            android:theme="@style/Base.Theme.AppCompat.Light.Dialog"
             android:screenOrientation="landscape">
         </activity>
     </application>

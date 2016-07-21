@@ -49,4 +49,7 @@
     <string name="message_user_left">%s se ha ido</string>
     <string name="user_action_typing">está escribiendo</string>
     <string name="asignaturas">Asignaturas</string>
+    <string name="pdf_toolbar">PDF Toolbar</string>
+    <string name="shape_toolbar">Shape Toolbar</string>
+    <string name="draw_toolbar">Draw Toolbar</string>
 </resources>

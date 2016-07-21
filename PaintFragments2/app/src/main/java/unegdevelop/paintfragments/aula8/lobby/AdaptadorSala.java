@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -107,7 +108,7 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
         });
 
         //metodo OnLongClick para la CardView COMPLETA (incluye todos los view dentro de la misma)
-        holder.tarjeta.setOnClickListener(new View.OnClickListener() {
+        /*holder.tarjeta.setOnClickListener(new View.OnClickListener() {
             public void onClick(final View v) 
             {
                 webServices apiService = Servidor.createService(webServices.class);
@@ -131,17 +132,31 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
                 });
 
             }
-        });
+        });*/
 
         holder.botonEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
+            public void onClick(final View v)
             {
-                Toast.makeText(v.getContext(), 
-                               "has entrado en la sala: " + lista.get(position).getMateria(),
-                               Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
-                v.getContext().startActivity(myIntent);
+                webServices apiService = Servidor.createService(webServices.class);
+                apiService.getSessions(holder.materia.getText().toString(),new Callback<List<Sessions>>() {
+                    @Override
+                    public void success(List<Sessions> tasks, Response response)
+                    {
+                        FragmentActivity  activity = (FragmentActivity)(v.getContext());
+                        FragmentManager   fm = activity.getSupportFragmentManager();
+                        DialogDetailsCard alertDialog = new DialogDetailsCard();
+                        alertDialog.holder = holder;
+                        alertDialog.session = tasks;
+                        alertDialog.show(fm, "display_details");
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error)
+                    {
+
+                    }
+                });
             }
         });
 
@@ -155,7 +170,7 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
 
     public class ViewHolderSala extends RecyclerView.ViewHolder {
         CardView tarjeta;
-        Button   botonEntrar;
+        FloatingActionButton   botonEntrar;
         TextView tema;
         TextView materia; 
         TextView seccion; 
@@ -174,7 +189,7 @@ public class AdaptadorSala extends RecyclerView.Adapter<AdaptadorSala.ViewHolder
             owner   = (TextView) itemView.findViewById(R.id.owner);
             usuariosConectados = (TextView) itemView.findViewById(R.id.usuariosConectados);
             usuariosMaximos    = (TextView) itemView.findViewById(R.id.usuariosMaximos);
-            botonEntrar        = (Button) itemView.findViewById(R.id.botonEntrar);
+            botonEntrar        = (FloatingActionButton) itemView.findViewById(R.id.botonEntrar);
 
         }
     }

@@ -27,28 +27,28 @@
                 />
 
             <ImageButton
-                android:id="@+id/draw_btn"
+                android:id="@+id/draw_tool_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:contentDescription="@string/brush"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/draw_toolbar"
                 android:src="@drawable/brush"
                 />
 
             <ImageButton
-                android:id="@+id/line_btn"
+                android:id="@+id/shapes_tool_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:contentDescription="@string/brush"
-                android:src="@drawable/linea"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/shape_toolbar"
+                android:src="@drawable/shapes"
                 />
 
             <ImageButton
-                android:id="@+id/erase_btn"
+                android:id="@+id/pdf_tool_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:contentDescription="@string/erase"
-                android:src="@drawable/eraser"
-               />
+                android:layout_height="match_parent"
+                android:contentDescription="@string/pdf_toolbar"
+                android:src="@drawable/pdf"
+                />
 
             <ImageButton
                 android:id="@+id/voice_btn"
@@ -59,18 +59,11 @@
                 />
 
             <ImageButton
-                android:id="@+id/shape_btn"
+                android:id="@+id/end_session"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:contentDescription="Shapes"
-                android:src="@drawable/shapes"/>
-
-            <ImageButton
-                android:id="@+id/text_box_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:contentDescription="Text box"
-                android:src="@drawable/text_box"/>
+                android:src="@drawable/test"
+                />
 
         </LinearLayout>
 
@@ -112,13 +105,13 @@
             android:gravity="center">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <SeekBar
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/BarraPincel"
 
@@ -131,6 +124,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="25.0 px"
                     android:id="@+id/TamañoPincel"
+                    android:textColor="#9E9E9E"
                     android:layout_gravity="center" />
 
 
@@ -151,45 +145,117 @@
                     />
 
                 <ImageButton
+                    android:id="@+id/draw_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:contentDescription="@string/brush"
+                    android:src="@drawable/brush"
+                    />
+
+                <ImageButton
+                    android:id="@+id/line_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:contentDescription="@string/brush"
+                    android:src="@drawable/linea"
+                    />
+
+                <ImageButton
+                    android:id="@+id/erase_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:contentDescription="@string/erase"
+                    android:src="@drawable/eraser"
+                    />
+
+                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/zoomup"
                     android:src="@drawable/mas"
+                    android:visibility="gone"
                     />
-
-
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/zoomdown"
                     android:src="@drawable/menos"
+                    android:visibility="gone"
                     />
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/rotar_pdf"
-                    android:src="@drawable/rotar" />
+                    android:src="@drawable/rotar"
+                    android:visibility="gone"
+                    />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/prev"
                     android:src="@drawable/flechaizq"
-                   />
+                    android:visibility="gone"
+                    />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/prox"
-                    android:src="@drawable/flechader" />
+                    android:src="@drawable/flechader"
+                    android:visibility="gone"
+                    />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/cargarpdf"
                     android:src="@drawable/pdf"
-                     />
+                    android:visibility="gone"
+                    />
+
+                <ImageButton
+                    android:id="@+id/text_box_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:contentDescription="Text box"
+                    android:src="@drawable/text_box"
+                    android:visibility="gone"
+                    />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rectangle_shape_btn"
+                    android:src="@drawable/rectangle_shape"
+                    android:visibility="gone"
+                    />
+
+
+                <ImageButton
+                    android:id="@+id/oval_shape_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/oval_shape"
+                    android:visibility="gone"
+                    />
+
+                <ImageButton
+                    android:id="@+id/filled_rectangle_shape_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/rectangle_shape_filled"
+                    android:visibility="gone"
+                    />
+                <ImageButton
+                    android:id="@+id/filled_oval_shape_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/oval_shape_filled"
+                    android:visibility="gone"
+                    />
+
             </LinearLayout>
 
         </LinearLayout>

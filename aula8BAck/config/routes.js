@@ -21,6 +21,7 @@ const Subject = mongoose.model('Subject');
 
 var mkdirp = require('mkdirp');
 var fs = require('fs');
+var dir = require('node-dir');
 const path = require('path');
 
 var numUsuarios = 0;
@@ -62,7 +63,7 @@ module.exports = function (app, io, passport)
     var file = req.params.file
     , path = file;
      console.log("enviando archivo a cliente");
-    res.download(path);
+     res.download(path);
   });
 
 
@@ -215,11 +216,17 @@ module.exports = function (app, io, passport)
         base64_decode(data.data,data.nombre,data.direccion);
     });
 
+    socket.on("closeSession", function(data){
+      console.log("Crrando... ", data);
+      sessions.closed(data);
+    });
+
     socket.on("getFilesSubject", function(data){
-      console.log( path.resolve("FILES/" + data.subject + "/" + data.section) );
-      console.log(walk("FILES/" + data.subject + "/" + data.section));
-      var result = walk("FILES/" + data.subject + "/" + data.section)
-      socket.emit("getFilesSubject", {success: result});
+      var dir = "FILES/" + data.subject + "/" + data.section;
+      var result = walk(dir);
+      dir = path.resolve(dir);
+      console.log("ResolverPatch -->>", dir);
+      socket.emit("getFilesSubject", {result : result, link: dir});
     });
 
 
@@ -238,7 +245,7 @@ var walk = function(dir) {
       })
       return results;
     } catch (e) {
-      return {results: "No se encontraron archivos"};
+      return "No se encontraron archivos";
     }
 }
 

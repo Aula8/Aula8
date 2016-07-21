@@ -25,7 +25,7 @@ public class MainActivityLobby extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) 
     {
         //orientacion de la pantalla bloqueada solo horizontal
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
         FragmentManager     fragmentManager = getFragmentManager();

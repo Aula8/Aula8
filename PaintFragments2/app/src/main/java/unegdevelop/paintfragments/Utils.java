@@ -100,4 +100,18 @@ public class Utils
         return direccionFile.substring(direccionFile.lastIndexOf("/")+1);
     }
 
+    public static String reemplazarSlash(String dir)
+    {
+        String retorno = "";
+        for (int i = 0; i< dir.length(); i++)
+        {
+            if(dir.charAt(i) != '\\')
+                retorno += dir.charAt(i);
+            else
+                retorno += "/";
+        }
+        return retorno;
+
+    }
+
 }

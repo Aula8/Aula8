@@ -117,4 +117,13 @@ exports.create = async(function* (req, res){
 
 });
 
+exports.closed = function(data){
+	Subject.findOne({name: data.subject}, function(error, subject){
+		console.log("Buscando Cerrar-->>", subject._id);
+		Session.update({theme: data.session, subject: subject._id}, {$push: {status: "inactive"}}, function(err,s){
+			console.log(s.status);
+		});
+	});
+}
+
 //Created by: Ricardo Vasquez 26073680

@@ -5,31 +5,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import unegdevelop.paintfragments.FilesController;
 import unegdevelop.paintfragments.R;
+import unegdevelop.paintfragments.Utils;
 
 /**
  * Created by wuilkysb on 20/07/16.
  */
 public class AdaptadorMaterial extends RecyclerView.Adapter<AdaptadorMaterial.AdaptadorViewHolder> {
 
-    private List<Material> materiales = new ArrayList<>();
-    private String pregunta;
+    private List<String> materiales = new ArrayList<>();
 
     public static class AdaptadorViewHolder extends RecyclerView.ViewHolder {
         private TextView material;
 
         public AdaptadorViewHolder(View v) {
             super (v);
-            this.material = (TextView) v.findViewById(R.id.respuesta);
+            material = (TextView) v.findViewById(R.id.respuesta);
         }
 
     }
 
-    public AdaptadorMaterial(List<Material> items) { this.materiales = items;}
+    public AdaptadorMaterial(List<String> items) {
+        this.materiales = items;
+    }
 
     @Override
     public int getItemCount() { return materiales.size();  }
@@ -41,7 +46,7 @@ public class AdaptadorMaterial extends RecyclerView.Adapter<AdaptadorMaterial.Ad
     }
 
     @Override
-    public void onBindViewHolder(AdaptadorViewHolder holder, int position) {
-        holder.material.setText(materiales.get(position).getMaterialName());
+    public void onBindViewHolder(final AdaptadorViewHolder holder, final int position) {
+        holder.material.setText(materiales.get(position));
     }
 }

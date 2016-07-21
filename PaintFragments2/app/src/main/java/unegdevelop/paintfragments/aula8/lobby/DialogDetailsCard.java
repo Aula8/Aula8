@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.okhttp.Call;
+import com.squareup.okhttp.internal.Util;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,6 +42,10 @@ import unegdevelop.paintfragments.R;
 import unegdevelop.paintfragments.Servidor;
 import unegdevelop.paintfragments.Sessions;
 import unegdevelop.paintfragments.SessionsAdapter;
+import unegdevelop.paintfragments.Utils;
+import unegdevelop.paintfragments.aula8.StudyMaterial.AdaptadorMaterial;
+import unegdevelop.paintfragments.aula8.StudyMaterial.DialogFileDownload;
+import unegdevelop.paintfragments.aula8.StudyMaterial.Material;
 import unegdevelop.paintfragments.webServices;
 
 /**
@@ -47,6 +56,7 @@ public class DialogDetailsCard extends DialogFragment
     private View dialogView;
     public  View myV;
     public  List<Sessions> session;
+    public List material;
 
     final private String GET_FILES_SUBJECT = "getFilesSubject";
 
@@ -107,9 +117,9 @@ public class DialogDetailsCard extends DialogFragment
             }
         });
 
-        FloatingActionButton dowload = (FloatingActionButton) dialogView
+        FloatingActionButton download = (FloatingActionButton) dialogView
                 .findViewById(R.id.dowloadFiles);
-        dowload.setOnClickListener(new View.OnClickListener() {
+        download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 JSONObject data = new JSONObject();
@@ -134,7 +144,26 @@ public class DialogDetailsCard extends DialogFragment
         @Override
         public void call(final Object... args) {
             final JSONObject data = (JSONObject) args[0];
-            System.out.println("[---->>] " + data);
+            try {
+                JSONArray dataResult = data.getJSONArray("result");
+                String dataLink = data.get("link").toString();
+                FragmentActivity activity = (FragmentActivity)(dialogView.getContext());
+                FragmentManager fm = activity.getSupportFragmentManager();
+                DialogFileDownload newSubject = new DialogFileDownload();
+                material = new ArrayList<>();
+
+                for(int i=0; i < dataResult.length(); i++){
+                    material.add(Utils.getFileName(dataResult.get(i).toString()));
+                }
+
+                newSubject.material = material;
+                newSubject.link = dataLink;
+
+
+                newSubject.show(fm, "display_service");
+            } catch (JSONException e) {
+                System.out.println("[---->>] No se encontraron archivos " );
+            }
             //Toast.makeText(dialogView.getContext(), "Nombre Archivos", Toast.LENGTH_SHORT).show();
         }
     };

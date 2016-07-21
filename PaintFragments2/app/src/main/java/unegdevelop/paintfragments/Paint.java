@@ -48,7 +48,7 @@ public class Paint extends Fragment implements OnClickListener
     private ImageButton                   lineBtn;
     private ImageButton                   colores;
     private ImageButton                   voiceBtn;
-    private ImageButton                   shapeBtn;
+    //private ImageButton                   shapeBtn;
     private ImageButton                   textBoxBtn;
     private ImageButton                   sigBtn;
     private ImageButton                   prevBtn;
@@ -61,6 +61,16 @@ public class Paint extends Fragment implements OnClickListener
     private SeekBar                       barraPincel;
     private TextView                      textoTamanioPincel;
     private ImageView                     imageView;
+
+
+    // TODO Agregado Alex 20/07/16 1:27 a.m
+    private ImageButton                   shapeToolBtn;
+    private ImageButton                   drawToolBtn;
+    private ImageButton                   pdfToolBtn;
+    private ImageButton                   shapeRectBtn;
+    private ImageButton                   shapeOvalBtn;
+    private ImageButton                   filledRectBtn;
+    private ImageButton                   filledOvalBtn;
 
     public Paint() {
     }
@@ -185,14 +195,37 @@ public class Paint extends Fragment implements OnClickListener
         rotateBtn = (ImageButton)view.findViewById(R.id.rotar_pdf);
         rotateBtn.setOnClickListener(this);
 
-        shapeBtn = (ImageButton) view.findViewById(R.id.shape_btn);
-        shapeBtn.setOnClickListener(this);
+        /*shapeBtn = (ImageButton) view.findViewById(R.id.shape_btn);
+        shapeBtn.setOnClickListener(this);*/
 
         textBoxBtn = (ImageButton) view.findViewById(R.id.text_box_btn);
         textBoxBtn.setOnClickListener(this);
 
         voiceBtn = (ImageButton)view.findViewById(R.id.voice_btn);
         voiceBtn.setOnClickListener(this);
+
+        //TODO Agregado Alex 1:31 a.m. 20/07/16
+        shapeToolBtn = (ImageButton)view.findViewById(R.id.shapes_tool_btn);
+        shapeToolBtn.setOnClickListener(this);
+
+        drawToolBtn = (ImageButton)view.findViewById(R.id.draw_tool_btn);
+        drawToolBtn.setOnClickListener(this);
+
+        pdfToolBtn = (ImageButton)view.findViewById(R.id.pdf_tool_btn);
+        pdfToolBtn.setOnClickListener(this);
+
+        shapeRectBtn = (ImageButton)view.findViewById(R.id.rectangle_shape_btn);
+        shapeRectBtn.setOnClickListener(this);
+
+        shapeOvalBtn = (ImageButton)view.findViewById(R.id.oval_shape_btn);
+        shapeOvalBtn.setOnClickListener(this);
+
+        filledRectBtn = (ImageButton)view.findViewById(R.id.filled_rectangle_shape_btn);
+        filledRectBtn.setOnClickListener(this);
+
+        filledOvalBtn = (ImageButton)view.findViewById(R.id.filled_oval_shape_btn);
+        filledOvalBtn.setOnClickListener(this);
+        //Fin editado
 
     }
 
@@ -255,9 +288,9 @@ public class Paint extends Fragment implements OnClickListener
 
         switch (view.getId())
         {
-            case R.id.shape_btn:
+            /*case R.id.shape_btn:
                 shapeBtnClick();
-                break;
+                break;*/
             case R.id.text_box_btn:
                 textBoxBtnClick();
                 break;
@@ -297,8 +330,92 @@ public class Paint extends Fragment implements OnClickListener
             case R.id.cargarpdf:
                 cargarPDFClick();
                 break;
+
+            //TODO Alex Agregado 1:33 a.m. 20/07/16
+            case R.id.draw_tool_btn:
+                showPdfToolbar(false);
+                showShapeToolbar(false);
+                showDrawToolbar(true);
+                break;
+            case R.id.shapes_tool_btn:
+                showDrawToolbar(false);
+                showPdfToolbar(false);
+                showShapeToolbar(true);
+                break;
+            case R.id.pdf_tool_btn:
+                drawView.setBrush("point");
+                showDrawToolbar(false);
+                showShapeToolbar(false);
+                showPdfToolbar(true);
+                break;
+            case R.id.rectangle_shape_btn:
+                drawView.setBrush("rectangle_shape");
+                drawView.setErase(false);
+                break;
+            case R.id.filled_rectangle_shape_btn:
+                drawView.setBrush("filled_rectangle_shape");
+                drawView.setErase(false);
+                break;
+            case R.id.oval_shape_btn:
+                drawView.setBrush("oval_shape");
+                drawView.setErase(false);
+                break;
+            case R.id.filled_oval_shape_btn:
+                drawView.setBrush("filled_oval_shape");
+                drawView.setErase(false);
+                break;
+
+            //fin Alex Agreado
             default:
                 break;
+        }
+    }
+
+    //TODO Alex agregado 1:36 a.m. 20/07/16
+    private void showDrawToolbar(boolean show){
+        if (show){
+            drawBtn.setVisibility(View.VISIBLE);
+            colores.setVisibility(View.VISIBLE);
+            eraseBtn.setVisibility(View.VISIBLE);
+            lineBtn.setVisibility(View.VISIBLE);
+        }else{
+            drawBtn.setVisibility(View.GONE);
+            colores.setVisibility(View.GONE);
+            eraseBtn.setVisibility(View.GONE);
+            lineBtn.setVisibility(View.GONE);
+        }
+    }
+
+    private void showShapeToolbar(boolean show){
+        if (show){
+            colores.setVisibility(View.VISIBLE);
+            shapeRectBtn.setVisibility(View.VISIBLE);
+            filledRectBtn.setVisibility(View.VISIBLE);
+            shapeOvalBtn.setVisibility(View.VISIBLE);
+            filledOvalBtn.setVisibility(View.VISIBLE);
+        }else{
+            shapeRectBtn.setVisibility(View.GONE);
+            filledRectBtn.setVisibility(View.GONE);
+            shapeOvalBtn.setVisibility(View.GONE);
+            filledOvalBtn.setVisibility(View.GONE);
+        }
+    }
+
+    private void showPdfToolbar(boolean show){
+        if (show){
+            sigBtn.setVisibility(View.VISIBLE);
+            prevBtn.setVisibility(View.VISIBLE);
+            pdfBtn.setVisibility(View.VISIBLE);
+            zinTtn.setVisibility(View.VISIBLE);
+            zoutBtn.setVisibility(View.VISIBLE);
+            rotateBtn.setVisibility(View.VISIBLE);
+        }else{
+            sigBtn.setVisibility(View.GONE);
+            prevBtn.setVisibility(View.GONE);
+            pdfBtn.setVisibility(View.GONE);
+            zinTtn.setVisibility(View.GONE);
+            zoutBtn.setVisibility(View.GONE);
+            rotateBtn.setVisibility(View.GONE);
         }
     }
 
@@ -312,12 +429,12 @@ public class Paint extends Fragment implements OnClickListener
                     paintClicked(result);
                 }
                 break;
-            case 2:
+            case 2:/*
                 if(resultCode == Activity.RESULT_OK){
                     String result=data.getStringExtra("shape");
                     drawView.setBrush(result);
                 }
-                break;
+                break;*/
             case 3:
                 if(resultCode == Activity.RESULT_OK){
                     String result=data.getStringExtra("text");
@@ -388,9 +505,12 @@ public class Paint extends Fragment implements OnClickListener
                 {
                     try
                     {
-                        FilesController.donwloadFile(dir, getActivity().getApplicationContext());
-                        int p = dir.lastIndexOf("/");
-                        final String filename = Utils.getA8Folder() + dir.substring(p);
+                        String filename;
+                        String filedir = Utils.reemplazarSlash(dir);
+                        System.out.println("DESCARGANDO EN "+filedir);
+                        FilesController.donwloadFile(filedir, getActivity().getApplicationContext());
+                        int slashR = filedir.lastIndexOf("/")+1;
+                        filename = Utils.getA8Folder() + filedir.substring(slashR);
                         while (!FilesController.getDownloadState());
                         asignarPDF(filename);
 
@@ -512,12 +632,12 @@ public class Paint extends Fragment implements OnClickListener
         }
     };
 
-    //Slots onClick
+    /*//Slots onClick
     private void shapeBtnClick()
     {
         Intent myIntent = new Intent(Paint.this.getActivity() , ShapeChooser.class);
         Paint.this.startActivityForResult(myIntent,2);
-    }
+    }*/
 
     private void textBoxBtnClick()
     {
@@ -676,7 +796,7 @@ public class Paint extends Fragment implements OnClickListener
         if(file.getName().endsWith(".pdf") || file.getName().endsWith(".PDF"))
         {
             pdf = new PDFImageView(file.getAbsolutePath(),imageView);
-            //replicarPDF(file);
+            replicarPDF(file);
         }
     }
 

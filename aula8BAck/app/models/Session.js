@@ -15,7 +15,7 @@ const SessionSchema = new Schema({
   files_folder: { type: String, default: '' },
   boadr: { type: String, default: '' },
   create_at: { type: Date, default: Date.now },
-  subject: [{type: mongoose.Schema.Types.ObjectId, ref: 'Subject'}],
+  subject: {type: mongoose.Schema.Types.ObjectId, ref: 'Subject'},
   users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
 });
 

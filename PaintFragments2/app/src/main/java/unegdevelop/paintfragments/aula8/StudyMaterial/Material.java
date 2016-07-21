@@ -7,6 +7,11 @@ public class Material {
     private String materialName;
     private String materialLink;
 
+
+    public Material(String materialName) {
+        this.materialName = materialName;
+    }
+
     public String getMaterialName() {
         return materialName;
     }
