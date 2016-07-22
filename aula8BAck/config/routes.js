@@ -220,6 +220,7 @@ module.exports = function (app, io, passport)
     socket.on("closeSession", function(data){
       console.log("Cerrando... ", data);
       sessions.closed(data);
+      socket.in(socket.room).emit("closedSession");
     });
 
     socket.on("getFilesSubject", function(data){
