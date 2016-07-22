@@ -17,31 +17,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="end"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp">
 
         <ImageButton
             android:id="@+id/attach_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_attachment"
-            android:contentDescription="@string/action_attach"/>
+            android:contentDescription="@string/action_attach"
+            />
 
-       <!-- <EditText
-            android:id="@+id/message_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/prompt_message"
-            android:imeActionId="@+id/send"
-            android:imeActionLabel="@string/action_send"
-            android:imeOptions="actionSend|actionPrevious|flagNavigateNext"
-            android:inputType="textMultiLine"
-            android:singleLine="false"
-            android:maxLength="230"
-            android:isScrollContainer="true"/> -->
         <ImageButton
             android:id="@+id/send_button"
             android:layout_width="wrap_content"

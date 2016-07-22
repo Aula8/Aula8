@@ -78,6 +78,7 @@ public class Paint extends Fragment implements OnClickListener
     private ImageButton                   filledRectBtn;
     private ImageButton                   filledOvalBtn;
     private ImageButton                   downloadMaterialBtn;
+    private ImageButton                   end_sesion;
 
     public Paint() {
     }
@@ -234,6 +235,9 @@ public class Paint extends Fragment implements OnClickListener
         filledOvalBtn = (ImageButton)view.findViewById(R.id.filled_oval_shape_btn);
         filledOvalBtn.setOnClickListener(this);
 
+        end_sesion = (ImageButton)view.findViewById(R.id.end_session);
+        end_sesion.setOnClickListener(this);
+
         //Fin editado
 
     }
@@ -382,6 +386,8 @@ public class Paint extends Fragment implements OnClickListener
                 break;
             case R.id.download_tool_btn:
                 showDownloadMaterial();
+            case R.id.end_session:
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
             //fin Alex Agreado
             default:

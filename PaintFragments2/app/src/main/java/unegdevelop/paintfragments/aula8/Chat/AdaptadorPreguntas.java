@@ -67,11 +67,11 @@ public class AdaptadorPreguntas extends RecyclerView.Adapter<AdaptadorPreguntas.
 
         public AdaptadorViewHolder(View v) {
             super (v);
-            imagenUsuario = (ImageView) v.findViewById(R.id.imagenUsuario);
+            //imagenUsuario = (ImageView) v.findViewById(R.id.imagenUsuario); ELiminado
             nombreUsuario = (TextView) v.findViewById(R.id.nombreUsuario);
             preguntaUsuario = (TextView) v.findViewById(R.id.preguntaUsuario);
             preguntaUsuario.setMovementMethod(new ScrollingMovementMethod());
-            //botonRespuesta = (Button) v.findViewById(R.id.botonRespuesta);
+            //botonRespuesta = (Button) v.findViewById(R.id.botonRespuesta); Eliminado
             botonExpandir = (Button) v.findViewById(R.id.expandir);
 
         }
@@ -128,7 +128,7 @@ public class AdaptadorPreguntas extends RecyclerView.Adapter<AdaptadorPreguntas.
 
     public void onBindViewHolder(final AdaptadorViewHolder viewHolder, final int i) {
         final int imagen = items.get(i).getImagen();
-        viewHolder.imagenUsuario.setImageResource(items.get(i).getImagen());
+        //viewHolder.imagenUsuario.setImageResource(items.get(i).getImagen()); ELIMINADO
         viewHolder.nombreUsuario.setText(items.get(i).getNombre());
         viewHolder.preguntaUsuario.setText(String.valueOf(items.get(i).getCorreo()));
 
@@ -144,8 +144,8 @@ public class AdaptadorPreguntas extends RecyclerView.Adapter<AdaptadorPreguntas.
                         AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                         final View dialog  = LayoutInflater.from(v.getContext()).inflate(R.layout.pregunta_expandida, null);
                         alert.setView(dialog);
-                        ImageView imageView = (ImageView)dialog.findViewById(R.id.imagenUsuario);
-                        imageView.setImageResource(imagen);
+                        //ImageView imageView = (ImageView)dialog.findViewById(R.id.imagenUsuario); NOOOOOO
+                        //imageView.setImageResource(imagen); NOOOOOOOOOOOOOOO
                         TextView textView = (TextView)dialog.findViewById(R.id.nombreUsuario);
                         textView.setText(viewHolder.nombreUsuario.getText().toString());
                         TextView textViewPregunta = (TextView)dialog.findViewById(R.id.preguntaUsuario);
@@ -185,7 +185,7 @@ public class AdaptadorPreguntas extends RecyclerView.Adapter<AdaptadorPreguntas.
                                 //respuestas.add(new Respuesta("Respuesta numero 5"));
                                 //adapter = new AdaptadorRespuesta(respuestas);
                                 //recyclerView.setAdapter(adapter);
-                                botonRespuesta.setVisibility(View.INVISIBLE);
+                                botonRespuesta.setVisibility(View.GONE); //AQUIIIIIIIIIIIIIIIIIIIII
                                 botonEnviar.setVisibility(View.VISIBLE);
                                 respuesta.setVisibility(View.VISIBLE);
                                 respuesta.requestFocus();
@@ -199,7 +199,7 @@ public class AdaptadorPreguntas extends RecyclerView.Adapter<AdaptadorPreguntas.
                         botonEnviar.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                botonEnviar.setVisibility(View.INVISIBLE);
+                                botonEnviar.setVisibility(View.GONE); //AQUIIIIIIIIIIIIIIIIIIIII
                                 botonRespuesta.setVisibility(View.VISIBLE);
 
                                 JSONObject r = new JSONObject();
@@ -237,7 +237,7 @@ public class AdaptadorPreguntas extends RecyclerView.Adapter<AdaptadorPreguntas.
 
 
                                 respuesta.setText("");
-                                respuesta.setVisibility(View.INVISIBLE);
+                                respuesta.setVisibility(View.GONE); //AQUIIIIIIIIIIIIIIIIIIIIIIIII
                             }
                         });
 

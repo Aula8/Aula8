@@ -1,7 +1,9 @@
 package unegdevelop.paintfragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
@@ -15,8 +17,10 @@ import net.gotev.uploadservice.UploadService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.Socket;
 
+import io.socket.emitter.Emitter;
 import unegdevelop.paintfragments.aula8.Chat.Contenedor;
 
 public class MainActivity extends FragmentActivity implements Paint.OnFragmentInteractionListener, Chat.OnFragmentInteractionListener
@@ -30,6 +34,8 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UploadService.NAMESPACE = "com.uneg.aula8";
+
+        Servidor.anadirEventoRecibidoAlSocket("closedSession", closedSession);
 
         try {
             AudioStream.startReceiver();
@@ -94,4 +100,27 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
             finish();
         }
     }
+
+    Emitter.Listener closedSession = new Emitter.Listener()
+    {
+        @Override
+        public void call(Object... args)
+        {
+            /*new AlertDialog.Builder(mycontext)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Salir De La Sesión")
+                    .setMessage("La Sesion Ha Finalizado. Desea Salir o Permanecer en el AULA?")
+                    .setPositiveButton("Salir", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+
+                    })
+                    .setNegativeButton("Permanecer", null)
+                    .show();
+            Toast.makeText(mycontext, "La Sesión Ha Termina", Toast.LENGTH_LONG).show();*/
+
+        }
+    };
 }

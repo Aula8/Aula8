@@ -45,14 +45,14 @@ public class FragmentConectados extends android.support.v4.app.Fragment
         items.add(new Usuario(R.drawable.foto1,"Xavier Moreno", "xavier@correo.com"));
         items.add(new Usuario(R.drawable.foto1,"Acilio Simoes", "acilio@correo.com"));
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.reciclador);
+        /*recyclerView = (RecyclerView) rootView.findViewById(R.id.reciclador);
         recyclerView.setHasFixedSize(true);
 
         lManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(lManager);
 
         adapter = new AdaptadorConectados(items);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
 
 
         return rootView;

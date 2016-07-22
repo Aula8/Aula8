@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <!-- <TextView
         android:text="chat del profesor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" /> -->
 
 </LinearLayout>

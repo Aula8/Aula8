@@ -74,7 +74,7 @@ public class Contenedor extends Fragment
         @Override
         public Fragment getItem(int position)
         {
-            switch (position)
+            switch (0)
             {
                 case 0:
                     return new FragmentChat();
@@ -90,13 +90,13 @@ public class Contenedor extends Fragment
 
         @Override
         public int getCount() {
-            return 3;
+            return 1;
         }
 
         @Override
         public CharSequence getPageTitle(int position)
         {
-            switch (position)
+            switch (0)
             {
                 case 0: return "Preguntas";
                 case 1: return "Conectados";

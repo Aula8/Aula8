@@ -70,7 +70,7 @@
                 android:id="@+id/end_session"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:src="@drawable/test"
+                android:src="@drawable/log_out"
                 />
 
         </LinearLayout>

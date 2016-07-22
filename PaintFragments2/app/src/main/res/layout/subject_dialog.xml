@@ -4,178 +4,187 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    >
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="426dp"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="426dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+
+        >
+
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/tarjeta"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            app:cardElevation="5dp"
+            app:cardCornerRadius="10dp"
+            android:elevation="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="50dp"
+            app:cardPreventCornerOverlap="false"
+            >
 
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/tarjeta"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardElevation="5dp"
-                app:cardCornerRadius="10dp"
-                android:elevation="10dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="50dp"
-                app:cardPreventCornerOverlap="false">
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:background="#e8e8e8">
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:id="@+id/Lmateria"
+                    android:gravity="top|center"
+                    android:background="@drawable/card_header">
+
+                    <TextView
+                        android:id="@+id/materia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="#fff"
+                        android:text="Materia"
+                        android:shadowRadius="1.5"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="15dp"
+                        android:textSize="35dp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/layoutTarjeta"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:layout_gravity="center">
+                    android:gravity="center"
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="190dp"
-                        android:id="@+id/Lmateria"
-                        android:gravity="top|center"
-                        android:background="@drawable/card_header">
-
-                        <TextView
-                            android:id="@+id/materia"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:textColor="#fff"
-                            android:text="Materia"
-                            android:shadowRadius="1.5"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginTop="40dp"
-                            android:layout_marginBottom="15dp"
-                            android:textSize="35dp"
-                            />
-                    </LinearLayout>
+                    android:background="#e8e8e8">
 
                     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/layoutTarjeta"
+
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="#e8e8e8">
-
-                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center">
-
-                            <TextView
-                                android:id="@+id/seccionTxt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Sección"
-                                android:textStyle="italic"
-                                android:textSize="25dp"
-                                android:textAlignment="center" />
-
-                            <TextView
-                                android:id="@+id/seccion"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:textStyle="bold"
-                                android:textSize="25dp"
-                                android:layout_marginLeft="10dp"/>
-                        </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
 
                         <TextView
-                            android:id="@+id/tema"
+                            android:id="@+id/seccionTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tema"
-                            android:textSize="20dp"
-                            android:layout_marginTop="20dp"
-                            />
+                            android:text="Sección"
+                            android:textStyle="italic"
+                            android:textSize="25dp"
+
+                            android:textAlignment="center" />
 
                         <TextView
-                            android:id="@+id/owner"
+                            android:id="@+id/seccion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Owner"
-                            android:textSize="20dp"
-                            android:layout_marginTop="20dp"
-                            />
+                            android:text="1"
+                            android:textStyle="bold"
+                            android:textSize="25dp"
+                            android:layout_marginLeft="10dp"/>
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-
-                    android:layout_gravity="start|bottom"
-                    android:layout_marginBottom="15dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/icon_person"/>
 
                     <TextView
-                        android:id="@+id/usuariosConectados"
+                        android:id="@+id/tema"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="32"
-                        android:textStyle="bold"
-                        android:textColor="#00FF00"
+                        android:text="Tema"
                         android:textSize="20dp"
+                        android:layout_marginTop="20dp"
                         />
 
                     <TextView
-                        android:id="@+id/slashTxt"
+                        android:id="@+id/owner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" / "
+                        android:text="Owner"
                         android:textSize="20dp"
+                        android:layout_marginTop="20dp"
                         />
-
-                    <TextView
-                        android:id="@+id/usuariosMaximos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="50"
-                        android:textStyle="bold"
-                        android:textSize="20dp"
-                        />
-
                 </LinearLayout>
+            </LinearLayout>
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/layoutSession"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/layoutTarjeta"
-                    android:layout_alignStart="@+id/tarjeta"
-                    android:layout_marginTop="240dp">
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
 
-                    <ListView
-                        android:id="@+id/sessions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
-                </LinearLayout>
+                android:layout_gravity="start|bottom"
+                android:layout_marginBottom="15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
-                    android:src="@drawable/card_logo"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="115dp"
-                    android:id="@+id/card_logo"
-                    />
-            </android.support.v7.widget.CardView>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/icon_person"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/usuariosConectados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="32"
+                    android:textStyle="bold"
+                    android:textColor="#00FF00"
+                    android:textSize="20dp"
+                    />
+
+                <TextView
+                    android:id="@+id/slashTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" / "
+                    android:textSize="20dp"
+                    />
+
+                <TextView
+                    android:id="@+id/usuariosMaximos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    />
+
+            </LinearLayout>
+
+
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/layoutSession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/layoutTarjeta"
+                android:layout_alignStart="@+id/tarjeta"
+                android:layout_marginTop="320dp"
+                >
+
+                <ListView
+                    android:id="@+id/sessions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </ScrollView>
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:src="@drawable/card_logo"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="115dp"
+                android:id="@+id/card_logo"
+                />
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_sessions"
@@ -183,7 +192,7 @@
         android:layout_height="wrap_content"
         app:backgroundTint="#673ab7"
         app:layout_anchor="@id/layoutTarjeta"
-        android:src="@drawable/mas"
+        android:src="@drawable/plus"
         android:contentDescription="@string/action_add"
         app:layout_anchorGravity="top|right|center_vertical"
         />
