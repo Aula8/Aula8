@@ -23,6 +23,7 @@ var mkdirp = require('mkdirp');
 var fs = require('fs');
 var dir = require('node-dir');
 const path = require('path');
+const asyncc = require('async');
 
 var numUsuarios = 0;
 var ROOMS = {};
@@ -217,16 +218,22 @@ module.exports = function (app, io, passport)
     });
 
     socket.on("closeSession", function(data){
-      console.log("Crrando... ", data);
+      console.log("Cerrando... ", data);
       sessions.closed(data);
     });
 
     socket.on("getFilesSubject", function(data){
-      var dir = "FILES/" + data.subject + "/" + data.section;
-      var result = walk(dir);
-      dir = path.resolve(dir);
-      console.log("ResolverPatch -->>", dir);
-      socket.emit("getFilesSubject", {result : result, link: dir});
+      asyncc.parallel({
+          subject : function (cb){ Subject.findOne({name: data.subject}).exec(cb); },
+          sess : function (cb){ Session.findOne({theme: socket.room}).exec(cb); },
+      }, function(err, result){
+          var dir = "FILES/" + result.subject._id + "/" + data.section + "/" + result.sess._id;
+          var results = walk(dir);
+          dir = path.resolve(dir);
+          dir = dir.split("/").slice(-3, dir.length).join("/") + "/" + result.sess._id;
+          console.log("ResolverPatch -->>", result.sess, socket.room);
+          socket.emit("getFilesSubject", {result : results, link: dir});
+      });
     });
 
 

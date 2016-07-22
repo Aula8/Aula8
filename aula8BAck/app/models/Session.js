@@ -5,7 +5,7 @@
  */
 
 const mongoose = require('mongoose');
-
+const timestamps = require ("mongoose-times");
 const Schema = mongoose.Schema;
 
 const SessionSchema = new Schema({
@@ -14,9 +14,9 @@ const SessionSchema = new Schema({
   status: { type: String, default: 'active' },
   files_folder: { type: String, default: '' },
   boadr: { type: String, default: '' },
-  create_at: { type: Date, default: Date.now },
   subject: {type: mongoose.Schema.Types.ObjectId, ref: 'Subject'},
   users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
 });
 
+SessionSchema.plugin(timestamps, { created: "created_at", lastUpdated: "updated_at" });
 module.exports = mongoose.model('Session', SessionSchema);

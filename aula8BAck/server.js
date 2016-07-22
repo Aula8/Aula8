@@ -28,6 +28,10 @@ require('./app/models/Section');
 require('./app/models/Session');
 require('./app/models/SubjectUser');
 require('./app/models/Question');
+const asyncc = require('async');
+
+const Subject = mongoose.model('Subject');
+const Session = mongoose.model('Session');
 
 const app = express();
 app.use(cors());
@@ -88,28 +92,39 @@ app.post('/uploadMaterial', function(req, res)
         section  = req.headers["section"],
         session  = req.headers["session"],
         folder   = req.headers["file-folder"];
-    var dirPath  = folder + "/" + subject + "/" + section + "/" + session;
-    console.log("Started binary upload of: " + filename);
-        
-    mkdirp(dirPath, function (err) 
-    {
-        if (err) 
+
+
+    asyncc.parallel({
+        subject : function (cb){ Subject.findOne({name: subject}).exec(cb); },
+        session : function (cb){ Session.findOne({theme: session}).exec(cb); },
+    }, function(err, result){
+      console.log("Sesion ID ", result.session._id, "Materia ID ", result.subject._id);
+
+        var dirPath  = folder + "/" + result.subject._id + "/" + section + "/" + result.session._id;
+        console.log("Started binary upload of: " + filename);
+            
+        mkdirp(dirPath, function (err) 
         {
-            console.log("Error ..");
-        }    
-        else 
-        {   
-            var filepath = path.resolve(dirPath, filename);
-            var out = fs.createWriteStream(filepath, { flags: 'w', encoding: 'binary', fd: null, mode: '644' });
-            req.pipe(out);
-            req.on('end', function() 
+            if (err) 
             {
-                console.log("Finished binary upload of: " + filename + "\n  in: " + filepath);
-                res.sendStatus(200);
-            });
-        } 
+                console.log("Error ..");
+            }    
+            else 
+            {   
+                var filepath = path.resolve(dirPath, filename);
+                var out = fs.createWriteStream(filepath, { flags: 'w', encoding: 'binary', fd: null, mode: '644' });
+                req.pipe(out);
+                req.on('end', function() 
+                {
+                    console.log("Finished binary upload of: " + filename + "\n  in: " + filepath);
+                    res.sendStatus(200);
+                });
+            } 
+        });
+
     });
 });
+
 require('./config/express')(app);
 require('./config/routes')(app, io);
 

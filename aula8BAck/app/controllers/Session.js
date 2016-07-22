@@ -45,9 +45,8 @@ exports.findSessionByTheme = async(function* (req, res) {
 });
 
 exports.findSessionBySubject = function (req, res) {
-	console.log(req.body.subject, req.params.subject);
 	Subject.findOne({name: req.params.subject}, function(error, subject){
-		Session.find({subject: subject.id}, function(err, session){
+		Session.find({subject: subject.id}).sort({created_at: -1}).exec(function(err, session){
 			if(!session)
 			{
 				res.statusCode = 404;
@@ -120,7 +119,8 @@ exports.create = async(function* (req, res){
 exports.closed = function(data){
 	Subject.findOne({name: data.subject}, function(error, subject){
 		console.log("Buscando Cerrar-->>", subject._id);
-		Session.update({theme: data.session, subject: subject._id}, {$push: {status: "inactive"}}, function(err,s){
+		console.log(subject._id, data.session);
+		Session.update({theme: data.session, subject: subject._id}, {$set: {status: "inactive"}}, function(err,s){
 			console.log(s.status);
 		});
 	});
