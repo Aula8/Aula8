@@ -45,9 +45,9 @@ public class SessionsAdapter extends ArrayAdapter<Sessions> {
         Sessions s = sessions.get(position);
         holder.theme.setText(s.getTheme());
         if(s.getStatus().equals("active")) {
-            holder.theme.setTextColor(Color.GREEN);
+            holder.theme.setTextColor(Color.parseColor("#673ab7"));
         }else{
-            holder.theme.setTextColor(Color.RED);
+            holder.theme.setTextColor(Color.parseColor("#a2a2a2"));
         }
 
         return row;

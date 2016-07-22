@@ -78,7 +78,7 @@ public class MainActivity extends FragmentActivity implements Paint.OnFragmentIn
                         public void onClick(DialogInterface dialog, int which) {
                             JSONObject data = new JSONObject();
                             try {
-                                data.put("session", Servidor.getActualSection());
+                                data.put("session", Servidor.room);
                                 data.put("subject", Servidor.getActualSubject());
                             } catch (JSONException e) {
                                 e.printStackTrace();

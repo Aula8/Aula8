@@ -3,167 +3,180 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/tarjeta"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="10dp"
-        android:elevation="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        app:cardPreventCornerOverlap="false">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="426dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/Lmateria">
-            <TextView
-                android:id="@+id/materia"
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/tarjeta"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textStyle="bold"
-                android:textColor="#2E2EFE"
-                android:text="Materia"
-                android:shadowRadius="1.5"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"
-                android:textSize="20dp"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentStart="false"
-                android:textAlignment="center" />
+                app:cardElevation="5dp"
+                app:cardCornerRadius="10dp"
+                android:elevation="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="50dp"
+                app:cardPreventCornerOverlap="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="190dp"
+                        android:id="@+id/Lmateria"
+                        android:gravity="top|center"
+                        android:background="@drawable/card_header">
+
+                        <TextView
+                            android:id="@+id/materia"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textColor="#fff"
+                            android:text="Materia"
+                            android:shadowRadius="1.5"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="40dp"
+                            android:layout_marginBottom="15dp"
+                            android:textSize="35dp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/layoutTarjeta"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="#e8e8e8">
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/seccionTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sección"
+                                android:textStyle="italic"
+                                android:textSize="25dp"
+                                android:textAlignment="center" />
+
+                            <TextView
+                                android:id="@+id/seccion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:textStyle="bold"
+                                android:textSize="25dp"
+                                android:layout_marginLeft="10dp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tema"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tema"
+                            android:textSize="20dp"
+                            android:layout_marginTop="20dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/owner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Owner"
+                            android:textSize="20dp"
+                            android:layout_marginTop="20dp"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+
+                    android:layout_gravity="start|bottom"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/icon_person"/>
+
+                    <TextView
+                        android:id="@+id/usuariosConectados"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="32"
+                        android:textStyle="bold"
+                        android:textColor="#00FF00"
+                        android:textSize="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/slashTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" / "
+                        android:textSize="20dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/usuariosMaximos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="50"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/layoutSession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/layoutTarjeta"
+                    android:layout_alignStart="@+id/tarjeta"
+                    android:layout_marginTop="240dp">
+
+                    <ListView
+                        android:id="@+id/sessions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></ListView>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:src="@drawable/card_logo"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="115dp"
+                    android:id="@+id/card_logo"
+                    />
+            </android.support.v7.widget.CardView>
 
         </RelativeLayout>
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/layoutTarjeta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ff2196f3"
-            android:layout_alignTop="@+id/Lmateria"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/tarjeta"
-            android:layout_marginTop="61dp">
-
-            <TextView
-                android:id="@+id/tema"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tema"
-                android:textSize="18dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp" />
-
-            <TextView
-                android:id="@+id/seccionTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sección"
-                android:textStyle="italic"
-                android:textSize="15dp"
-                android:layout_below="@+id/tema"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="false"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="20dp" />
-
-            <TextView
-                android:id="@+id/seccion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textStyle="bold"
-                android:textSize="15dp"
-                android:layout_alignTop="@+id/seccionTxt"
-                android:layout_toEndOf="@+id/seccionTxt"
-                android:layout_marginStart="4dp"
-                android:layout_marginRight="20dp"/>
-
-            <TextView
-                android:id="@+id/owner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Owner"
-                android:textSize="15dp"
-                android:layout_below="@+id/seccionTxt"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:layout_alignEnd="@+id/usuariosConectados" />
-
-            <TextView
-                android:id="@+id/conectadosTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Conectados:"
-                android:textSize="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_below="@+id/owner"
-                android:layout_alignParentStart="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp" />
-
-            <TextView
-                android:id="@+id/usuariosConectados"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="32"
-                android:textStyle="bold"
-                android:textColor="#00FF00"
-                android:layout_marginStart="10dp"
-                android:textSize="20dp"
-                android:layout_alignBottom="@+id/conectadosTxt"
-                android:layout_toEndOf="@+id/conectadosTxt" />
-
-            <TextView
-                android:id="@+id/slashTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="/"
-                android:layout_alignTop="@+id/usuariosConectados"
-                android:layout_toEndOf="@+id/usuariosConectados"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="20dp"
-                android:textSize="20dp"
-                />
-
-            <TextView
-                android:id="@+id/usuariosMaximos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="50"
-                android:textStyle="bold"
-                android:layout_alignTop="@+id/slashTxt"
-                android:layout_toEndOf="@+id/slashTxt"
-                android:layout_marginStart="8dp"
-                android:layout_marginRight="20dp"
-                android:textSize="20dp"
-                />
-        </RelativeLayout>
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/layoutSession"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/layoutTarjeta"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/tarjeta"
-            android:layout_marginTop="240dp">
-
-            <ListView
-                android:id="@+id/sessions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></ListView>
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_sessions"
         android:layout_width="wrap_content"
@@ -172,18 +185,9 @@
         app:layout_anchor="@id/layoutTarjeta"
         android:src="@drawable/mas"
         android:contentDescription="@string/action_add"
-        app:layout_anchorGravity="bottom|right|end"
+        app:layout_anchorGravity="top|right|center_vertical"
         />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/dowloadFiles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:backgroundTint="#673ab7"
-        app:layout_anchor="@id/layoutTarjeta"
-        android:src="@drawable/mas"
-        android:contentDescription="@string/action_add"
-        app:layout_anchorGravity="top|right|center_vertical"
-        android:adjustViewBounds="false" />
-
 </android.support.design.widget.CoordinatorLayout>
+
+

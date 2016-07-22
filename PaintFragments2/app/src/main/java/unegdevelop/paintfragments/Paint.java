@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,8 +30,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.socket.emitter.Emitter;
+import unegdevelop.paintfragments.aula8.StudyMaterial.DialogFileDownload;
 
 public class Paint extends Fragment implements OnClickListener
 {
@@ -71,6 +77,7 @@ public class Paint extends Fragment implements OnClickListener
     private ImageButton                   shapeOvalBtn;
     private ImageButton                   filledRectBtn;
     private ImageButton                   filledOvalBtn;
+    private ImageButton                   downloadMaterialBtn;
 
     public Paint() {
     }
@@ -113,6 +120,7 @@ public class Paint extends Fragment implements OnClickListener
         iniciarPropiedades(getView());
             if(Servidor.haveAccess())
                 iniciarBotones(getView());
+            iniciaDownloadBtn(getView());
 
         anadirEventosDeReplicacion();
     }
@@ -225,8 +233,15 @@ public class Paint extends Fragment implements OnClickListener
 
         filledOvalBtn = (ImageButton)view.findViewById(R.id.filled_oval_shape_btn);
         filledOvalBtn.setOnClickListener(this);
+
         //Fin editado
 
+    }
+
+    private void iniciaDownloadBtn(View view)
+    {
+        downloadMaterialBtn = (ImageButton)view.findViewById(R.id.download_tool_btn);
+        downloadMaterialBtn.setOnClickListener(this);
     }
 
     private void anadirEventosDeReplicacion()
@@ -236,6 +251,7 @@ public class Paint extends Fragment implements OnClickListener
         Servidor.anadirEventoRecibidoAlSocket("zoom_in", onZoomIn);
         Servidor.anadirEventoRecibidoAlSocket("zoom_out", onZoomOut);
         Servidor.anadirEventoRecibidoAlSocket("rotar", onRotate);
+        Servidor.anadirEventoRecibidoAlSocket("getFilesSubject", filesSubject);
     }
 
     public void onButtonPressed(Uri uri)
@@ -364,6 +380,8 @@ public class Paint extends Fragment implements OnClickListener
                 drawView.setBrush("filled_oval_shape");
                 drawView.setErase(false);
                 break;
+            case R.id.download_tool_btn:
+                showDownloadMaterial();
 
             //fin Alex Agreado
             default:
@@ -417,6 +435,21 @@ public class Paint extends Fragment implements OnClickListener
             zoutBtn.setVisibility(View.GONE);
             rotateBtn.setVisibility(View.GONE);
         }
+    }
+
+    private void showDownloadMaterial(){
+        JSONObject data = new JSONObject();
+        String materia = Servidor.getActualSubject();
+        String section = Servidor.getActualSection();
+        String session = Servidor.room;
+        try {
+            data.put("subject", materia);
+            data.put("section", section);
+            data.put("session", session);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Servidor.enviarEvento("getFilesSubject", data);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -490,6 +523,35 @@ public class Paint extends Fragment implements OnClickListener
         }
 
     }
+
+    public Emitter.Listener filesSubject = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            List material;
+            final JSONObject data = (JSONObject) args[0];
+            try {
+                JSONArray dataResult = data.getJSONArray("result");
+                String dataLink = data.get("link").toString();
+                FragmentActivity activity = (FragmentActivity)(getContext());
+                FragmentManager fm = activity.getSupportFragmentManager();
+                DialogFileDownload newSubject = new DialogFileDownload();
+                material = new ArrayList<>();
+
+                for(int i=0; i < dataResult.length(); i++){
+                    material.add(Utils.getFileName(dataResult.get(i).toString()));
+                }
+
+                newSubject.material = material;
+                newSubject.link = dataLink;
+
+
+                newSubject.show(fm, "display_service");
+            } catch (JSONException e) {
+                System.out.println("[---->>] No se encontraron archivos " );
+            }
+            //Toast.makeText(dialogView.getContext(), "Nombre Archivos", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     Emitter.Listener onNewPDF = new Emitter.Listener()
     {

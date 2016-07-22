@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -56,18 +59,13 @@ public class DialogDetailsCard extends DialogFragment
     private View dialogView;
     public  View myV;
     public  List<Sessions> session;
-    public List material;
-
-    final private String GET_FILES_SUBJECT = "getFilesSubject";
 
     AdaptadorSala.ViewHolderSala holder;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        final AlertDialog.Builder sub = new AlertDialog.Builder(getActivity());
-
-        Servidor.anadirEventoRecibidoAlSocket(GET_FILES_SUBJECT, filesSubject);
+        final AlertDialog.Builder sub = new AlertDialog.Builder(getActivity(), android.R.style.Theme_DeviceDefault_NoActionBar_TranslucentDecor);
 
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context
                 .LAYOUT_INFLATER_SERVICE);
@@ -79,6 +77,9 @@ public class DialogDetailsCard extends DialogFragment
 
         TextView theme = (TextView) dialogView.findViewById(R.id.tema);
         theme.setText(holder.tema.getText());
+
+        TextView onwer = (TextView) dialogView.findViewById(R.id.owner);
+        onwer.setText(holder.owner.getText());
 
         final ListView sessions = (ListView) dialogView.findViewById(R.id.sessions);
         SessionsAdapter stringArray = new SessionsAdapter(getActivity(),
@@ -97,7 +98,6 @@ public class DialogDetailsCard extends DialogFragment
                 Intent myIntent = new Intent( dialogView.getContext() ,
                         MainActivity.class);
                 dialogView.getContext().startActivity(myIntent);
-
             }
         });
 
@@ -117,55 +117,10 @@ public class DialogDetailsCard extends DialogFragment
             }
         });
 
-        FloatingActionButton download = (FloatingActionButton) dialogView
-                .findViewById(R.id.dowloadFiles);
-        download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                JSONObject data = new JSONObject();
-                try {
-                    data.put("subject", holder.materia.getText().toString());
-                    data.put("section", holder.seccion.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Servidor.enviarEvento(GET_FILES_SUBJECT, data);
-            }
-        });
-
         if (!Servidor.haveAccess())
             fab.setVisibility(View.GONE);
 
         return sub.create();
     }
-
-
-    public Emitter.Listener filesSubject = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            final JSONObject data = (JSONObject) args[0];
-            try {
-                JSONArray dataResult = data.getJSONArray("result");
-                String dataLink = data.get("link").toString();
-                FragmentActivity activity = (FragmentActivity)(dialogView.getContext());
-                FragmentManager fm = activity.getSupportFragmentManager();
-                DialogFileDownload newSubject = new DialogFileDownload();
-                material = new ArrayList<>();
-
-                for(int i=0; i < dataResult.length(); i++){
-                    material.add(Utils.getFileName(dataResult.get(i).toString()));
-                }
-
-                newSubject.material = material;
-                newSubject.link = dataLink;
-
-
-                newSubject.show(fm, "display_service");
-            } catch (JSONException e) {
-                System.out.println("[---->>] No se encontraron archivos " );
-            }
-            //Toast.makeText(dialogView.getContext(), "Nombre Archivos", Toast.LENGTH_SHORT).show();
-        }
-    };
 
 }

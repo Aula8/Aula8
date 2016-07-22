@@ -51,6 +51,14 @@
                 />
 
             <ImageButton
+                android:id="@+id/download_tool_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/pdf_toolbar"
+                android:src="@drawable/download"
+                />
+
+            <ImageButton
                 android:id="@+id/voice_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"

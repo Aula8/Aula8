@@ -72,11 +72,11 @@ public class Servidor
     final static int    INTENTOS_CONEXION = 20;
     final static String PUERTO = "3000";
 
-    static public String      URL;
-    static public Socket      socket;
-    static public String      room;
-    static public HttpRequest request;
-    static public JSONObject jsonObj;
+    static public String        URL;
+    static public Socket        socket;
+    static public String        room;
+    static public HttpRequest   request;
+    static public JSONObject    jsonObj;
 
 
     static public JSONObject jsonObjUser;

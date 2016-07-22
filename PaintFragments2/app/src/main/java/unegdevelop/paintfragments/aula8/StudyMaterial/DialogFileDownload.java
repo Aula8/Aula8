@@ -16,6 +16,7 @@ import java.util.List;
 
 import unegdevelop.paintfragments.FilesController;
 import unegdevelop.paintfragments.R;
+import unegdevelop.paintfragments.Servidor;
 import unegdevelop.paintfragments.Utils;
 
 /**
@@ -44,8 +45,9 @@ public class DialogFileDownload extends DialogFragment {
             materials.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                    final String dir = link;
                     final String file = materials.getItemAtPosition(i).toString();
+
+                    final String dir = link  + "/" + file;
 
                     Thread t = new Thread(new Runnable()
                     {
@@ -54,8 +56,8 @@ public class DialogFileDownload extends DialogFragment {
                         {
                             try
                             {
-                                System.out.println("Direccion Descarga " + file);
-                                FilesController.donwloadFile("downloadMaterials/" + file, view.getContext());
+                                System.out.println("Direccion Descarga " + dir);
+                                FilesController.donwloadFile(dir, view.getContext());
                                 while (!FilesController.getDownloadState());
 
                             }
